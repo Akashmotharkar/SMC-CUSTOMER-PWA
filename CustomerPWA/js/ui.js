@@ -10,50 +10,15 @@ app:null,
 
 initialize:function(){
 
-this.app =
+this.app=
 document.getElementById("app");
 
 },
 
 renderLogin:function(){
 
-this.app.innerHTML =
-
-`
-<div class="card">
-
-<div class="card-title">
-
-Customer Login
-
-</div>
-
-<input
-id="loginPhone"
-type="tel"
-placeholder="Mobile Number"
-maxlength="10"
-style="
-width:100%;
-padding:12px;
-font-size:16px;
-margin-bottom:12px;
-">
-
-<button
-id="loginButton"
-style="
-width:100%;
-padding:12px;
-font-size:16px;
-">
-
-Login
-
-</button>
-
-</div>
-`;
+this.app.innerHTML=
+Views.showLogin();
 
 document
 .getElementById("loginButton")
@@ -61,12 +26,13 @@ document
 "click",
 async function(){
 
-const phone =
+const phone=
 document
 .getElementById("loginPhone")
-.value;
+.value
+.trim();
 
-const success =
+const success=
 await Auth.login(phone);
 
 if(success){
@@ -75,91 +41,68 @@ App.loadDashboard();
 
 }
 
-});
+}
+);
 
 },
 
 renderDashboard:function(customer){
 
-this.app.innerHTML =
+this.app.innerHTML=
+
+Views.showDashboard(customer)+
+
+this.bottomNavigation("home");
+
+},
+
+renderDashboardData:function(data){
+
+const container=
+document.getElementById(
+"dashboardContent"
+);
+
+if(!container){
+return;
+}
+
+container.innerHTML=
 
 `
 <div class="card">
 
 <div class="card-title">
-
-Welcome
-
+Today's Summary
 </div>
 
 <div class="row">
-
-<span>Name</span>
-
+<span>Milk</span>
 <span class="value">
-
-${customer.name}
-
+${Utils.formatNumber(data.milk)} L
 </span>
-
 </div>
 
 <div class="row">
-
-<span>Customer ID</span>
-
+<span>Rate</span>
 <span class="value">
-
-${customer.customerId}
-
+${Utils.formatCurrency(data.rate)}
 </span>
-
 </div>
 
 <div class="row">
-
-<span>Phone</span>
-
+<span>Amount</span>
 <span class="value">
-
-${customer.phone}
-
+${Utils.formatCurrency(data.amount)}
 </span>
-
 </div>
 
+<div class="row">
+<span>Balance</span>
+<span class="value">
+${Utils.formatCurrency(data.balance)}
+</span>
 </div>
-
-<div id="dashboardContent">
-
-</div>
-
-<div class="bottom-nav">
-
-<button
-class="active">
-
-Home
-
-</button>
-
-<button>
-
-History
-
-</button>
-
-<button>
-
-Bills
-
-</button>
-
-<button>
-
-Notifications
-
-</button>
 
 </div>
 
@@ -167,79 +110,54 @@ Notifications
 
 },
 
-renderDashboardData:function(data){
+bottomNavigation:function(active){
 
-const container =
-document.getElementById(
-"dashboardContent"
-);
+return `
 
-if(!container){
+<div class="bottom-nav">
 
-return;
+<button
+id="navHome"
+class="${active==="home"?"active":""}">
 
-}
+Home
 
-container.innerHTML =
+</button>
 
-`
-<div class="card">
+<button
+id="navLedger"
+class="${active==="ledger"?"active":""}">
 
-<div class="card-title">
+Ledger
 
-Today's Summary
+</button>
 
-</div>
+<button
+id="navBills"
+class="${active==="bills"?"active":""}">
 
-<div class="row">
+Bills
 
-<span>Milk</span>
+</button>
 
-<span class="value">
+<button
+id="navNotifications"
+class="${active==="notifications"?"active":""}">
 
-${data.milk || 0} L
+Alerts
 
-</span>
+</button>
 
-</div>
+<button
+id="navProfile"
+class="${active==="profile"?"active":""}">
 
-<div class="row">
+Profile
 
-<span>Rate</span>
-
-<span class="value">
-
-₹${data.rate || 0}
-
-</span>
-
-</div>
-
-<div class="row">
-
-<span>Amount</span>
-
-<span class="value">
-
-₹${data.amount || 0}
-
-</span>
+</button>
 
 </div>
 
-<div class="row">
-
-<span>Balance</span>
-
-<span class="value">
-
-₹${data.balance || 0}
-
-</span>
-
-</div>
-
-</div>
 `;
 
 }
