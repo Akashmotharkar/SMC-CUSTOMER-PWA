@@ -1385,6 +1385,781 @@ initialize
 
 );
 
+document.addEventListener(
+"DOMContentLoaded",
+initialize
+);
+
+async function initialize(){
+
+if(loadSession()){
+
+showApp();
+
+await loadCustomer();
+
+}
+else{
+
+showLogin();
+
+}
+
+}
+
+UI.mobile.addEventListener(
+
+"input",
+
+function(){
+
+this.value=this.value
+.replace(/\D/g,"")
+.substring(0,10);
+
+}
+
+);
+
+UI.mobile.addEventListener(
+
+"keydown",
+
+function(e){
+
+if(e.key==="Enter"){
+
+UI.loginButton.click();
+
+}
+
+}
+
+);
+
+UI.loginButton.onclick=
+
+async function(){
+
+const mobile=
+
+UI.mobile.value.trim();
+
+if(mobile.length!==10){
+
+setStatus(
+
+"Enter valid mobile number."
+
+);
+
+return;
+
+}
+
+showLoading(
+
+"Signing in..."
+
+);
+
+setStatus("");
+
+try{
+
+const customer=
+
+await apiLogin(
+
+mobile
+
+);
+
+hideLoading();
+
+if(!customer){
+
+setStatus(
+
+"Mobile number not registered."
+
+);
+
+return;
+
+}
+
+App.customer=
+
+customer;
+
+saveSession();
+
+showApp();
+
+await loadCustomer();
+
+}
+
+catch(e){
+
+hideLoading();
+
+setStatus(
+
+e.message
+
+);
+
+}
+
+};
+
+async function apiLogin(
+
+mobile
+
+){
+
+const response=
+
+await fetch(
+
+CONFIG.API+
+
+"?action=login&mobile="+
+
+encodeURIComponent(
+
+mobile
+
+)
+
+);
+
+if(!response.ok){
+
+throw new Error(
+
+"Server unavailable."
+
+);
+
+}
+
+const data=
+
+await response.json();
+
+if(!data.success){
+
+return null;
+
+}
+
+return data.customer;
+
+}
+
+async function loadCustomer(){
+
+showLoading(
+
+"Loading..."
+
+);
+
+try{
+
+await Promise.all([
+
+loadBill(),
+
+loadNotice(),
+
+loadHistory()
+
+]);
+
+renderAll();
+
+hideLoading();
+
+}
+
+catch(e){
+
+hideLoading();
+
+alert(
+
+e.message
+
+);
+
+}
+
+}
+
+async function loadBill(){
+
+const response=
+
+await fetch(
+
+CONFIG.API+
+
+"?action=bill&id="+
+
+encodeURIComponent(
+
+App.customer.id
+
+)
+
+);
+
+const data=
+
+await response.json();
+
+App.bill=data;
+
+}
+
+async function loadNotice(){
+
+const response=
+
+await fetch(
+
+CONFIG.API+
+
+"?action=notice"
+
+);
+
+const data=
+
+await response.json();
+
+App.notice=data.notice;
+
+}
+
+async function loadHistory(){
+
+const response=
+
+await fetch(
+
+CONFIG.API+
+
+"?action=history&id="+
+
+encodeURIComponent(
+
+App.customer.id
+
+)
+
+);
+
+const data=
+
+await response.json();
+
+App.history=
+
+data.items||[];
+
+}
+
+function renderAll(){
+
+document.getElementById(
+"customerNameHeader"
+).textContent=
+App.customer.name;
+
+renderBill();
+
+renderNotice();
+
+renderHistory();
+
+}
+
+function renderNotice(){
+
+document.getElementById(
+"noticeContent"
+).textContent=
+
+App.notice||
+
+"No notice available.";
+
+}
+
+function renderBill(){
+
+const b=App.bill;
+
+if(!b){
+
+return;
+
+}
+
+document.getElementById(
+"billMonth"
+).textContent=
+b.month;
+
+document.getElementById(
+"customerName"
+).textContent=
+b.name;
+
+document.getElementById(
+"invoiceNumber"
+).textContent=
+b.invoiceNumber;
+
+document.getElementById(
+"invoiceDate"
+).textContent=
+b.invoiceDate;
+
+document.getElementById(
+"rate"
+).textContent=
+b.rate;
+
+document.getElementById(
+"rate2"
+).textContent=
+b.rate;
+
+document.getElementById(
+"balance"
+).textContent=
+formatMoney(
+b.balance
+);
+
+document.getElementById(
+"amount"
+).textContent=
+formatMoney(
+b.amount
+);
+
+document.getElementById(
+"grandTotal"
+).textContent=
+formatMoney(
+b.totalAmount
+);
+
+document.getElementById(
+"totalQty"
+).textContent=
+b.totalQty;
+
+document.getElementById(
+"totalQty2"
+).textContent=
+b.totalQty;
+
+document.getElementById(
+"upiQr"
+).src=
+b.qr;
+
+const tbody=
+
+document.querySelector(
+
+"#dailyTable tbody"
+
+);
+
+tbody.innerHTML="";
+
+b.days.forEach(
+
+function(day){
+
+const tr=
+
+document.createElement(
+"tr"
+);
+
+tr.innerHTML=
+
+"<td>"+
+
+day.day+
+
+"</td>"+
+
+"<td>"+
+
+day.qty+
+
+"</td>";
+
+tbody.appendChild(
+tr
+);
+
+}
+
+);
+
+}
+
+function renderHistory(){
+
+const list=
+
+document.getElementById(
+"historyList"
+);
+
+list.innerHTML="";
+
+if(
+
+!App.history||
+
+App.history.length===0
+
+){
+
+list.innerHTML=
+
+"<div class='history-item'>No notifications.</div>";
+
+return;
+
+}
+
+App.history.forEach(
+
+function(item){
+
+const div=
+
+document.createElement(
+"div"
+);
+
+div.className=
+"history-item";
+
+div.innerHTML=
+
+"<div class='history-title'>"+
+
+escapeHtml(
+item.title
+)+
+
+"</div>"+
+
+"<div class='history-message'>"+
+
+escapeHtml(
+item.message
+)+
+
+"</div>"+
+
+"<div class='history-time'>"+
+
+item.time+
+
+"</div>";
+
+list.appendChild(
+div
+);
+
+}
+
+);
+
+}
+
+function formatMoney(v){
+
+return
+
+Number(
+
+v||0
+
+).toFixed(2);
+
+}
+
+function escapeHtml(text){
+
+return String(
+
+text||""
+
+)
+
+.replace(
+
+/&/g,
+
+"&amp;"
+
+)
+
+.replace(
+
+/</g,
+
+"&lt;"
+
+)
+
+.replace(
+
+/>/g,
+
+"&gt;"
+
+);
+
+}
+
+/* =====================================================
+PWA INSTALL
+===================================================== */
+
+let deferredPrompt = null;
+
+window.addEventListener(
+
+"beforeinstallprompt",
+
+function(e){
+
+e.preventDefault();
+
+deferredPrompt = e;
+
+}
+
+);
+
+/* =====================================================
+SERVICE WORKER
+===================================================== */
+
+async function registerServiceWorker(){
+
+if(
+
+!("serviceWorker" in navigator)
+
+){
+
+return;
+
+}
+
+await navigator.serviceWorker.register(
+
+"sw.js"
+
+);
+
+}
+
+/* =====================================================
+FIREBASE PUSH
+===================================================== */
+
+async function initializePush(){
+
+try{
+
+const token=
+
+await FirebaseMessaging.getToken();
+
+if(!token){
+
+return;
+
+}
+
+App.token=token;
+
+await savePushToken(token);
+
+}
+
+catch(e){
+
+console.log(e);
+
+}
+
+}
+
+async function savePushToken(
+
+token
+
+){
+
+await fetch(
+
+CONFIG.API,
+
+{
+
+method:"POST",
+
+headers:{
+
+"Content-Type":
+
+"application/json"
+
+},
+
+body:JSON.stringify({
+
+action:"saveToken",
+
+customerId:
+
+App.customer.id,
+
+token:token
+
+})
+
+}
+
+);
+
+}
+
+FirebaseMessaging.onMessage(
+
+async function(payload){
+
+console.log(
+
+payload
+
+);
+
+await loadCustomer();
+
+}
+);
+
+/* =====================================================
+AUTO REFRESH
+===================================================== */
+
+setInterval(
+
+async function(){
+
+if(
+
+!App.customer
+
+){
+
+return;
+
+}
+
+await loadCustomer();
+
+},
+
+60000
+
+);
+
+/* =====================================================
+INITIALIZATION
+===================================================== */
+
+(async function(){
+
+await registerServiceWorker();
+
+})();
+
+window.addEventListener(
+
+"load",
+
+async function(){
+
+if(
+
+App.customer
+
+){
+
+await initializePush();
+
+}
+
+}
+
+);
+
+document.addEventListener(
+
+"visibilitychange",
+
+async function(){
+
+if(
+
+document.hidden
+
+){
+
+return;
+
+}
+
+if(
+
+App.customer
+
+){
+
+await loadCustomer();
+
+}
+
+}
+
+);
+
+
+
 
 
 
