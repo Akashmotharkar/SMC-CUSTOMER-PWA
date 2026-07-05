@@ -90,7 +90,96 @@ UI.renderDashboard(
 this.customer
 );
 
+this.bindNavigation();
+
 await this.refreshDashboard();
+
+},
+
+bindNavigation(){
+
+const home=
+document.getElementById(
+"navHome"
+);
+
+if(home){
+
+home.onclick=()=>{
+
+this.loadDashboard();
+
+};
+
+}
+
+const ledger=
+document.getElementById(
+"navLedger"
+);
+
+if(ledger){
+
+ledger.onclick=()=>{
+
+Utils.showToast(
+"Ledger screen coming next."
+);
+
+};
+
+}
+
+const bills=
+document.getElementById(
+"navBills"
+);
+
+if(bills){
+
+bills.onclick=()=>{
+
+Utils.showToast(
+"Bills screen coming next."
+);
+
+};
+
+}
+
+const alerts=
+document.getElementById(
+"navNotifications"
+);
+
+if(alerts){
+
+alerts.onclick=()=>{
+
+Utils.showToast(
+"Notifications screen coming next."
+);
+
+};
+
+}
+
+const profile=
+document.getElementById(
+"navProfile"
+);
+
+if(profile){
+
+profile.onclick=()=>{
+
+Utils.showToast(
+"Profile screen coming next."
+);
+
+};
+
+}
 
 },
 
