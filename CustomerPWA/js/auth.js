@@ -1,6 +1,12 @@
+/**
+ * ==========================================================
+ * AUTHENTICATION
+ * ==========================================================
+ */
+
 const Auth = {
 
-    login() {
+    async login() {
 
         const mobile =
             document
@@ -18,55 +24,121 @@ const Auth = {
 
         }
 
-        document
-            .getElementById("loginBtn")
-            .disabled = true;
+        const button =
+            document.getElementById(
+                "loginBtn"
+            );
 
-        google.script.run
+        button.disabled = true;
 
-            .withSuccessHandler(function(result) {
+        button.innerText =
+            "Please wait...";
 
-                document
-                    .getElementById("loginBtn")
-                    .disabled = false;
+        try {
 
-                if (!result.success) {
-
-                    alert(result.message);
-
-                    return;
-
-                }
-
-                localStorage.setItem(
-                    "customer",
-                    JSON.stringify(result.customer)
+            const result =
+                await API.login(
+                    mobile
                 );
 
-                window.location =
-                    "dashboard.html";
+            button.disabled = false;
 
-            })
+            button.innerText =
+                "Login";
 
-            .withFailureHandler(function(err) {
+            if (!result.success) {
 
-                document
-                    .getElementById("loginBtn")
-                    .disabled = false;
+                alert(
+                    result.message
+                );
 
-                alert(err);
+                return;
 
-            })
+            }
 
-            .apiLogin(mobile);
+            localStorage.setItem(
+
+                "customer",
+
+                JSON.stringify(
+                    result.customer
+                )
+
+            );
+
+            window.location.href =
+                "dashboard.html";
+
+        }
+
+        catch (e) {
+
+            button.disabled = false;
+
+            button.innerText =
+                "Login";
+
+            alert(
+                "Unable to connect to server."
+            );
+
+            console.error(e);
+
+        }
+
+    },
+
+
+
+    logout() {
+
+        localStorage.removeItem(
+            "customer"
+        );
+
+        window.location.href =
+            "index.html";
+
+    },
+
+
+
+    getCustomer() {
+
+        const customer =
+            localStorage.getItem(
+                "customer"
+            );
+
+        if (!customer) {
+
+            return null;
+
+        }
+
+        return JSON.parse(customer);
+
+    },
+
+
+
+    isLoggedIn() {
+
+        return this.getCustomer() !== null;
 
     }
 
 };
 
+
+
 document
     .getElementById("loginBtn")
     .addEventListener(
         "click",
-        Auth.login
+        function () {
+
+            Auth.login();
+
+        }
     );
