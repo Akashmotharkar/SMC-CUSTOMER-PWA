@@ -1,137 +1,107 @@
-/*
-==========================================================
-APPLICATION
-==========================================================
-*/
+/**
+ * ==========================================================
+ * APPLICATION
+ * ==========================================================
+ */
 
 const App = {
 
-version: "1.0.0",
+    customer: null,
 
-async initialize() {
 
-UI.initialize();
 
-Utils.showLoading();
+    async initialize() {
 
-API.initialize(
-"YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL"
-);
+        this.customer =
+            Auth.getCustomer();
 
-if (Auth.restoreSession()) {
+        if (!this.customer) {
 
-await this.loadDashboard();
+            window.location.href =
+                "index.html";
 
-}
-else {
+            return;
 
-Utils.hideLoading();
+        }
 
-UI.renderLogin();
+        try {
 
-}
+            const result =
+                await API.profile(
+                    this.customer.id
+                );
 
-this.bindEvents();
+            if (!result.success) {
 
-},
+                alert(
+                    result.message
+                );
 
-bindEvents() {
+                Auth.logout();
 
-const refreshButton =
-document.getElementById(
-"refreshButton"
-);
+                return;
 
-if (refreshButton) {
+            }
 
-refreshButton.addEventListener(
-"click",
-() => {
+            this.customer =
+                result.customer;
 
-if (Auth.isLoggedIn()) {
+            localStorage.setItem(
 
-this.loadDashboard();
+                "customer",
 
-}
+                JSON.stringify(
+                    this.customer
+                )
 
-}
-);
+            );
 
-}
+            this.updateHeader();
 
-},
+        }
 
-async loadDashboard() {
+        catch (e) {
 
-if (!Auth.isLoggedIn()) {
+            console.error(e);
 
-UI.renderLogin();
+            alert(
+                "Unable to load customer information."
+            );
 
-return;
+        }
 
-}
+    },
 
-Utils.showLoading();
 
-try {
 
-const customer =
-Auth.getCustomer();
+    updateHeader() {
 
-UI.renderDashboard(
-customer
-);
+        const name =
+            document.getElementById(
+                "customerName"
+            );
 
-const dashboard =
-await API.getDashboard(
-customer.customerId
-);
+        if (name) {
 
-if (
-dashboard &&
-dashboard.success
-) {
+            name.textContent =
+                this.customer.name;
 
-UI.renderDashboardData(
-dashboard.data
-);
+        }
 
-Storage.setLastSync();
-
-}
-
-else {
-
-Utils.showToast(
-dashboard.message ||
-"Unable to load dashboard."
-);
-
-}
-
-}
-catch (e) {
-
-Utils.showToast(
-e.message ||
-"Unable to connect."
-);
-
-}
-finally {
-
-Utils.hideLoading();
-
-}
-
-}
+    }
 
 };
 
+
+
 document.addEventListener(
-"DOMContentLoaded",
-function() {
 
-App.initialize();
+    "DOMContentLoaded",
 
-});
+    function () {
+
+        App.initialize();
+
+    }
+
+);
