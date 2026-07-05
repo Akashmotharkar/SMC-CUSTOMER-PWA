@@ -1997,8 +1997,8 @@ try{
 
 const token=
 
-await FirebaseMessaging.getToken();
-
+await window.FirebaseMessaging.getToken();
+    
 if(!token){
 
 return;
@@ -2059,19 +2059,25 @@ token:token
 
 }
 
-FirebaseMessaging.onMessage(
+window.FirebaseMessaging.onMessage(
 
 async function(payload){
 
-console.log(
+console.log("FCM Message", payload);
 
-payload
-
-);
+try{
 
 await loadCustomer();
 
 }
+catch(e){
+
+console.error(e);
+
+}
+
+}
+
 );
 
 /* =====================================================
