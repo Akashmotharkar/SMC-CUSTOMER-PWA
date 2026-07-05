@@ -1,0 +1,1405 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width,initial-scale=1,viewport-fit=cover">
+
+<title>Milk Bill</title>
+
+<meta
+name="theme-color"
+content="#6200ea">
+
+<link
+rel="manifest"
+href="manifest.json">
+
+<link
+rel="icon"
+href="icons/icon-192.png">
+
+<style>
+
+:root{
+
+--primary:#6200ea;
+--primary-dark:#4b00c2;
+
+--bg:#f4f5f7;
+
+--card:#ffffff;
+
+--border:#dddddd;
+
+--text:#222222;
+
+--muted:#777777;
+
+--success:#1b8f3a;
+
+--danger:#d32f2f;
+
+--notice:#fff8e1;
+
+--history:#f8f9fa;
+
+}
+
+*{
+
+margin:0;
+padding:0;
+box-sizing:border-box;
+
+font-family:
+
+Roboto,
+Arial,
+sans-serif;
+
+}
+
+html,
+body{
+
+width:100%;
+height:100%;
+
+background:var(--bg);
+
+overflow:hidden;
+
+}
+
+body{
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+}
+
+button{
+
+cursor:pointer;
+
+}
+
+input{
+
+outline:none;
+
+}
+
+.hidden{
+
+display:none !important;
+
+}
+
+/* ===========================
+LOGIN SCREEN
+=========================== */
+
+#loginScreen{
+
+width:100%;
+height:100%;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+padding:20px;
+
+}
+
+.login-card{
+
+width:100%;
+
+max-width:380px;
+
+background:white;
+
+border-radius:18px;
+
+padding:30px;
+
+box-shadow:
+
+0 8px 24px rgba(0,0,0,.15);
+
+display:flex;
+
+flex-direction:column;
+
+gap:20px;
+
+}
+
+.login-title{
+
+font-size:28px;
+
+font-weight:bold;
+
+text-align:center;
+
+color:var(--primary);
+
+}
+
+.login-subtitle{
+
+text-align:center;
+
+color:#666;
+
+font-size:15px;
+
+}
+
+.mobile-box{
+
+display:flex;
+
+align-items:center;
+
+border:1px solid #ccc;
+
+border-radius:10px;
+
+overflow:hidden;
+
+height:52px;
+
+}
+
+.country{
+
+width:70px;
+
+background:#eee;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+font-weight:bold;
+
+}
+
+#mobile{
+
+flex:1;
+
+border:none;
+
+padding:0 14px;
+
+font-size:18px;
+
+}
+
+#loginButton{
+
+height:52px;
+
+border:none;
+
+background:var(--primary);
+
+color:white;
+
+font-size:18px;
+
+font-weight:bold;
+
+border-radius:10px;
+
+}
+
+#loginButton:disabled{
+
+opacity:.5;
+
+}
+
+.login-status{
+
+text-align:center;
+
+font-size:14px;
+
+color:#666;
+
+}
+
+/* ===========================
+APP LAYOUT
+=========================== */
+
+#app{
+
+width:100%;
+
+height:100%;
+
+display:flex;
+
+flex-direction:column;
+
+}
+
+header{
+
+height:60px;
+
+background:var(--primary);
+
+color:white;
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+
+padding:0 16px;
+
+flex-shrink:0;
+
+}
+
+.header-title{
+
+font-size:20px;
+
+font-weight:bold;
+
+}
+
+.header-user{
+
+font-size:14px;
+
+opacity:.9;
+
+}
+
+#logoutButton{
+
+background:none;
+
+border:none;
+
+color:white;
+
+font-size:16px;
+
+}
+
+main{
+
+flex:1;
+
+display:flex;
+
+overflow:hidden;
+
+}
+
+/* ===========================
+LEFT PANEL
+=========================== */
+
+#noticePanel{
+
+width:280px;
+
+background:var(--notice);
+
+border-right:1px solid var(--border);
+
+display:flex;
+
+flex-direction:column;
+
+}
+
+.panel-title{
+
+height:48px;
+
+display:flex;
+
+align-items:center;
+
+padding:0 16px;
+
+font-size:18px;
+
+font-weight:bold;
+
+border-bottom:1px solid var(--border);
+
+}
+
+#noticeContent{
+
+flex:1;
+
+overflow:auto;
+
+padding:16px;
+
+white-space:pre-wrap;
+
+line-height:1.6;
+
+font-size:15px;
+
+}
+
+/* ===========================
+CENTER BILL
+=========================== */
+
+#billPanel{
+
+flex:1;
+
+display:flex;
+
+justify-content:center;
+
+align-items:flex-start;
+
+overflow:auto;
+
+background:#eeeeee;
+
+padding:16px;
+
+}
+
+#billContainer{
+
+width:100%;
+
+max-width:700px;
+
+background:white;
+
+border-radius:16px;
+
+box-shadow:
+
+0 6px 16px rgba(0,0,0,.12);
+
+overflow:hidden;
+
+}
+
+/* ===========================
+RIGHT PANEL
+=========================== */
+
+#historyPanel{
+
+width:320px;
+
+background:var(--history);
+
+border-left:1px solid var(--border);
+
+display:flex;
+
+flex-direction:column;
+
+}
+
+#historyList{
+
+flex:1;
+
+overflow:auto;
+
+padding:12px;
+
+}
+
+.history-item{
+
+background:white;
+
+border-radius:10px;
+
+padding:12px;
+
+margin-bottom:10px;
+
+box-shadow:0 1px 4px rgba(0,0,0,.08);
+
+}
+
+.history-title{
+
+font-weight:bold;
+
+font-size:15px;
+
+margin-bottom:6px;
+
+}
+
+.history-message{
+
+font-size:14px;
+
+line-height:1.5;
+
+white-space:pre-wrap;
+
+}
+
+.history-time{
+
+margin-top:8px;
+
+font-size:12px;
+
+color:#777;
+
+text-align:right;
+
+}
+
+/* ===========================
+BILL
+=========================== */
+
+.bill-header{
+
+background:var(--primary);
+
+color:white;
+
+padding:16px;
+
+text-align:center;
+
+}
+
+.bill-title{
+
+font-size:24px;
+
+font-weight:bold;
+
+}
+
+.bill-subtitle{
+
+margin-top:6px;
+
+font-size:14px;
+
+opacity:.9;
+
+}
+
+.bill-section{
+
+padding:16px;
+
+border-bottom:1px solid #eee;
+
+}
+
+.bill-row{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin-bottom:10px;
+
+gap:20px;
+
+}
+
+.bill-label{
+
+font-weight:bold;
+
+}
+
+.bill-value{
+
+text-align:right;
+
+}
+
+.customer-name{
+
+font-size:22px;
+
+font-weight:bold;
+
+text-align:center;
+
+padding:16px;
+
+}
+
+.summary-table{
+
+width:100%;
+
+border-collapse:collapse;
+
+}
+
+.summary-table th{
+
+background:#fafafa;
+
+border:1px solid #ddd;
+
+padding:10px;
+
+font-size:14px;
+
+}
+
+.summary-table td{
+
+border:1px solid #ddd;
+
+padding:8px;
+
+text-align:center;
+
+font-size:14px;
+
+}
+
+.summary-table tfoot td{
+
+font-weight:bold;
+
+background:#fafafa;
+
+}
+
+.payment-box{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+gap:20px;
+
+padding:20px;
+
+}
+
+.qr-box{
+
+display:flex;
+
+flex-direction:column;
+
+align-items:center;
+
+}
+
+.qr-box img{
+
+width:170px;
+
+height:170px;
+
+}
+
+.scan-text{
+
+margin-top:8px;
+
+font-size:13px;
+
+font-weight:bold;
+
+}
+
+.total-box{
+
+flex:1;
+
+display:flex;
+
+flex-direction:column;
+
+gap:12px;
+
+font-size:18px;
+
+}
+
+.total-row{
+
+display:flex;
+
+justify-content:space-between;
+
+}
+
+.total-final{
+
+font-size:24px;
+
+font-weight:bold;
+
+color:var(--primary);
+
+}
+
+.footer{
+
+padding:18px;
+
+text-align:center;
+
+font-size:14px;
+
+line-height:1.6;
+
+background:#fafafa;
+
+}
+
+/* ===========================
+LOADING
+=========================== */
+
+#loading{
+
+position:fixed;
+
+inset:0;
+
+background:rgba(255,255,255,.9);
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+z-index:9999;
+
+font-size:22px;
+
+font-weight:bold;
+
+color:var(--primary);
+
+}
+
+/* ===========================
+MOBILE
+=========================== */
+
+@media(max-width:900px){
+
+main{
+
+flex-direction:column;
+
+}
+
+#noticePanel{
+
+width:100%;
+
+height:140px;
+
+border-right:none;
+
+border-bottom:1px solid #ddd;
+
+}
+
+#historyPanel{
+
+width:100%;
+
+height:180px;
+
+border-left:none;
+
+border-top:1px solid #ddd;
+
+}
+
+.payment-box{
+
+flex-direction:column;
+
+}
+
+.qr-box img{
+
+width:150px;
+
+height:150px;
+
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="loading" class="hidden">
+Loading...
+</div>
+
+<!-- ===================================================== -->
+<!-- LOGIN -->
+<!-- ===================================================== -->
+
+<div id="loginScreen">
+
+    <div class="login-card">
+
+        <div class="login-title">
+            Milk Collection
+        </div>
+
+        <div class="login-subtitle">
+            Login using your registered mobile number
+        </div>
+
+        <div class="mobile-box">
+
+            <div class="country">
+                +91
+            </div>
+
+            <input
+                id="mobile"
+                type="tel"
+                maxlength="10"
+                inputmode="numeric"
+                placeholder="Mobile Number">
+
+        </div>
+
+        <button id="loginButton">
+            Login
+        </button>
+
+        <div
+            id="loginStatus"
+            class="login-status">
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ===================================================== -->
+<!-- APP -->
+<!-- ===================================================== -->
+
+<div
+    id="app"
+    class="hidden">
+
+<header>
+
+<div class="header-title">
+Milk Bill
+</div>
+
+<div
+class="header-user"
+id="customerNameHeader">
+</div>
+
+<button
+id="logoutButton">
+Logout
+</button>
+
+</header>
+
+<main>
+
+<!-- ===================================================== -->
+<!-- NOTICE BOARD -->
+<!-- ===================================================== -->
+
+<section id="noticePanel">
+
+<div class="panel-title">
+
+Notice Board
+
+</div>
+
+<div id="noticeContent">
+
+No notice available.
+
+</div>
+
+</section>
+
+<!-- ===================================================== -->
+<!-- BILL -->
+<!-- ===================================================== -->
+
+<section id="billPanel">
+
+<div id="billContainer">
+
+<div class="bill-header">
+
+<div class="bill-title">
+
+श्री कृष्ण दूध कलेक्शन
+
+</div>
+
+<div
+class="bill-subtitle"
+id="billMonth">
+
+Current Month
+
+</div>
+
+</div>
+
+<div
+class="customer-name"
+id="customerName">
+
+Customer
+
+</div>
+
+<div class="bill-section">
+
+<div class="bill-row">
+
+<div class="bill-label">
+
+Invoice No
+
+</div>
+
+<div
+class="bill-value"
+id="invoiceNumber">
+
+-
+
+</div>
+
+</div>
+
+<div class="bill-row">
+
+<div class="bill-label">
+
+Invoice Date
+
+</div>
+
+<div
+class="bill-value"
+id="invoiceDate">
+
+-
+
+</div>
+
+</div>
+
+</div>
+
+<div class="bill-section">
+
+<table
+class="summary-table"
+id="dailyTable">
+
+<thead>
+
+<tr>
+
+<th>
+
+Day
+
+</th>
+
+<th>
+
+Qty
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+</tbody>
+
+<tfoot>
+
+<tr>
+
+<td>
+
+Total
+
+</td>
+
+<td id="totalQty">
+
+0
+
+</td>
+
+</tr>
+
+</tfoot>
+
+</table>
+
+</div>
+
+<div class="bill-section">
+
+<div class="bill-row">
+
+<div class="bill-label">
+
+Rate
+
+</div>
+
+<div
+class="bill-value"
+id="rate">
+
+0
+
+</div>
+
+</div>
+
+<div class="bill-row">
+
+<div class="bill-label">
+
+Milk Amount
+
+</div>
+
+<div
+class="bill-value"
+id="amount">
+
+0.00
+
+</div>
+
+</div>
+
+<div class="bill-row">
+
+<div class="bill-label">
+
+Balance
+
+</div>
+
+<div
+class="bill-value"
+id="balance">
+
+0.00
+
+</div>
+
+</div>
+
+</div>
+
+<div class="payment-box">
+
+<div class="qr-box">
+
+<img
+id="upiQr"
+src="">
+
+<div class="scan-text">
+
+SCAN TO PAY
+
+</div>
+
+</div>
+
+<div class="total-box">
+
+<div class="total-row">
+
+<div>
+
+Total Quantity
+
+</div>
+
+<div
+id="totalQty2">
+
+0
+
+</div>
+
+</div>
+
+<div class="total-row">
+
+<div>
+
+Rate
+
+</div>
+
+<div
+id="rate2">
+
+0
+
+</div>
+
+</div>
+
+<div class="total-row total-final">
+
+<div>
+
+Total Amount
+
+</div>
+
+<div
+id="grandTotal">
+
+0.00
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="footer">
+
+कृपया डिलवरी बॉयला रोख रक्कम देऊ नका.
+
+<br><br>
+
+UPI / Call
+
+<br>
+
+9422552827
+
+<br>
+
+7020739198
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ===================================================== -->
+<!-- NOTIFICATION HISTORY -->
+<!-- ===================================================== -->
+
+<section id="historyPanel">
+
+    <div class="panel-title">
+
+        Notifications
+
+    </div>
+
+    <div id="historyList">
+
+    </div>
+
+</section>
+
+</main>
+
+</div>
+
+<!-- ===================================================== -->
+<!-- FIREBASE -->
+<!-- ===================================================== -->
+
+<script
+type="module"
+src="firebase-config.js">
+</script>
+
+<script
+type="module"
+src="firebase-app.js">
+</script>
+
+<script
+type="module"
+src="firebase-messaging.js">
+</script>
+
+<!-- ===================================================== -->
+<!-- APPLICATION -->
+<!-- ===================================================== -->
+
+<script>
+
+const App={
+
+customer:null,
+
+bill:null,
+
+notice:null,
+
+history:[],
+
+token:null,
+
+loading:false
+
+};
+
+const UI={
+
+loginScreen:
+document.getElementById(
+"loginScreen"
+),
+
+app:
+document.getElementById(
+"app"
+),
+
+loading:
+document.getElementById(
+"loading"
+),
+
+loginButton:
+document.getElementById(
+"loginButton"
+),
+
+logoutButton:
+document.getElementById(
+"logoutButton"
+),
+
+mobile:
+document.getElementById(
+"mobile"
+),
+
+loginStatus:
+document.getElementById(
+"loginStatus"
+)
+
+};
+
+function showLoading(text){
+
+UI.loading.textContent=
+text||"Loading...";
+
+UI.loading.classList.remove(
+"hidden"
+);
+
+}
+
+function hideLoading(){
+
+UI.loading.classList.add(
+"hidden"
+);
+
+}
+
+function showLogin(){
+
+UI.app.classList.add(
+"hidden"
+);
+
+UI.loginScreen.classList.remove(
+"hidden"
+);
+
+}
+
+function showApp(){
+
+UI.loginScreen.classList.add(
+"hidden"
+);
+
+UI.app.classList.remove(
+"hidden"
+);
+
+}
+
+function setStatus(message){
+
+UI.loginStatus.textContent=
+message;
+
+}
+
+function saveSession(){
+
+localStorage.setItem(
+
+"customer",
+
+JSON.stringify(
+App.customer
+)
+
+);
+
+}
+
+function loadSession(){
+
+const s=
+localStorage.getItem(
+"customer"
+);
+
+if(!s){
+
+return false;
+
+}
+
+try{
+
+App.customer=
+JSON.parse(s);
+
+return true;
+
+}
+
+catch(e){
+
+return false;
+
+}
+
+}
+
+function clearSession(){
+
+localStorage.removeItem(
+"customer"
+);
+
+}
+
+function logout(){
+
+clearSession();
+
+location.reload();
+
+}
+
+UI.logoutButton.onclick=
+logout;
+
+/* =====================================================
+APP START
+===================================================== */
+
+document.addEventListener(
+
+"DOMContentLoaded",
+
+initialize
+
+);
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
