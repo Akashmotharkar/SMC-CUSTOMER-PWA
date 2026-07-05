@@ -1,121 +1,72 @@
-/*
-==========================================================
-AUTHENTICATION
-==========================================================
-*/
-
 const Auth = {
 
-customer: null,
+    login() {
 
-async login(phone) {
+        const mobile =
+            document
+                .getElementById("mobile")
+                .value
+                .trim();
 
-phone = String(phone || "").trim();
+        if (!mobile) {
 
-if (phone === "") {
+            alert(
+                "Please enter mobile number."
+            );
 
-Utils.showToast(
-"Enter mobile number."
-);
+            return;
 
-return false;
+        }
 
-}
+        document
+            .getElementById("loginBtn")
+            .disabled = true;
 
-Utils.showLoading();
+        google.script.run
 
-try {
+            .withSuccessHandler(function(result) {
 
-const result =
-await API.login(phone);
+                document
+                    .getElementById("loginBtn")
+                    .disabled = false;
 
-Utils.hideLoading();
+                if (!result.success) {
 
-if (
-!result ||
-!result.success
-) {
+                    alert(result.message);
 
-Utils.showToast(
-result && result.message
-? result.message
-: "Login failed."
-);
+                    return;
 
-return false;
+                }
 
-}
+                localStorage.setItem(
+                    "customer",
+                    JSON.stringify(result.customer)
+                );
 
-this.customer =
-result.customer;
+                window.location =
+                    "dashboard.html";
 
-Storage.setCustomer(
-result.customer
-);
+            })
 
-Utils.showToast(
-"Login successful."
-);
+            .withFailureHandler(function(err) {
 
-return true;
+                document
+                    .getElementById("loginBtn")
+                    .disabled = false;
 
-}
+                alert(err);
 
-catch (e) {
+            })
 
-Utils.hideLoading();
+            .apiLogin(mobile);
 
-Utils.showToast(
-e.message ||
-"Unable to connect."
-);
-
-return false;
-
-}
-
-},
-
-logout() {
-
-this.customer = null;
-
-Storage.clear();
-
-location.reload();
-
-},
-
-restoreSession() {
-
-const customer =
-Storage.getCustomer();
-
-if (!customer) {
-
-return false;
-
-}
-
-this.customer =
-customer;
-
-return true;
-
-},
-
-isLoggedIn() {
-
-return (
-this.customer !== null
-);
-
-},
-
-getCustomer() {
-
-return this.customer;
-
-}
+    }
 
 };
+
+document
+    .getElementById("loginBtn")
+    .addEventListener(
+        "click",
+        Auth.login
+    );
