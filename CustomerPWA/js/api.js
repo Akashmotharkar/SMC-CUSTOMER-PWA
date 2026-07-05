@@ -1,132 +1,173 @@
-/*
-==========================================================
-GOOGLE APPS SCRIPT API
-==========================================================
-*/
+/**
+ * ==========================================================
+ * API CONFIGURATION
+ * ==========================================================
+ */
 
 const API = {
 
-url: "",
+    url:
+        "https://script.google.com/macros/s/AKfycbzMhJrNMURve4OeTjECogdkzxUNJV8O5UN4k60EP2wP1V1Kd-eFDKVzYD4Rt5jL9A-w/exec",
 
-initialize: function(url) {
 
-this.url = url;
 
-},
+    async post(action, data = {}) {
 
-async request(action, data) {
+        const response =
+            await fetch(
+                this.url,
+                {
 
-if (!this.url) {
-throw new Error(
-"API URL not configured."
-);
-}
+                    method: "POST",
 
-const payload = {
-action: action,
-data: data || {}
-};
+                    headers: {
 
-const response =
-await fetch(this.url, {
-method: "POST",
-headers: {
-"Content-Type":
-"application/json"
-},
-body:
-JSON.stringify(payload)
-});
+                        "Content-Type":
+                            "application/json"
 
-if (!response.ok) {
+                    },
 
-throw new Error(
-"Network Error"
-);
+                    body: JSON.stringify({
 
-}
+                        action: action,
 
-return await response.json();
+                        ...data
 
-},
+                    })
 
-login: function(phone) {
+                }
+            );
 
-return this.request(
-"login",
-{
-phone: phone
-}
-);
+        return await response.json();
 
-},
+    },
 
-getDashboard: function(customerId) {
 
-return this.request(
-"dashboard",
-{
-customerId: customerId
-}
-);
 
-},
+    login(mobile) {
 
-getNotifications: function(customerId) {
+        return this.post(
 
-return this.request(
-"notifications",
-{
-customerId: customerId
-}
-);
+            "login",
 
-},
+            {
 
-markNotificationRead: function(notificationId) {
+                mobile: mobile
 
-return this.request(
-"markNotificationRead",
-{
-notificationId:
-notificationId
-}
-);
+            }
 
-},
+        );
 
-deleteNotification: function(notificationId) {
+    },
 
-return this.request(
-"deleteNotification",
-{
-notificationId:
-notificationId
-}
-);
 
-},
 
-getBills: function(customerId) {
+    profile(customerId) {
 
-return this.request(
-"bills",
-{
-customerId: customerId
-}
-);
+        return this.post(
 
-},
+            "profile",
 
-getHistory: function(customerId) {
+            {
 
-return this.request(
-"history",
-{
-customerId: customerId
-}
-);
+                customerId: customerId
 
-}
+            }
+
+        );
+
+    },
+
+
+
+    ledger(customerId) {
+
+        return this.post(
+
+            "ledger",
+
+            {
+
+                customerId: customerId
+
+            }
+
+        );
+
+    },
+
+
+
+    bills(customerId) {
+
+        return this.post(
+
+            "bills",
+
+            {
+
+                customerId: customerId
+
+            }
+
+        );
+
+    },
+
+
+
+    notifications(customerId) {
+
+        return this.post(
+
+            "notifications",
+
+            {
+
+                customerId: customerId
+
+            }
+
+        );
+
+    },
+
+
+
+    markRead(notificationId) {
+
+        return this.post(
+
+            "readNotification",
+
+            {
+
+                notificationId:
+                    notificationId
+
+            }
+
+        );
+
+    },
+
+
+
+    deleteNotification(notificationId) {
+
+        return this.post(
+
+            "deleteNotification",
+
+            {
+
+                notificationId:
+                    notificationId
+
+            }
+
+        );
+
+    }
 
 };
