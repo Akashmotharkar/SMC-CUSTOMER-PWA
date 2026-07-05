@@ -8,6 +8,8 @@
 
     let currentToken = null;
 
+   let initialized = false;
+
     async function initialize() {
 
         firebase.initializeApp(firebaseConfig);
@@ -15,6 +17,8 @@
         messaging = firebase.messaging();
 
         await registerServiceWorker();
+
+       initialized = true;
 
     }
 
@@ -138,18 +142,26 @@
 
     }
 
+   function isInitialized() {
+
+       return initialized;
+   
+   }
+
     window.FirebaseMessaging = {
 
-        initialize,
+    initialize,
 
-        requestPermission,
+    requestPermission,
 
-        refreshToken,
+    refreshToken,
 
-        onMessage,
+    onMessage,
 
-        getToken
+    getToken,
 
-    };
+    isInitialized
+
+};
 
 })();
