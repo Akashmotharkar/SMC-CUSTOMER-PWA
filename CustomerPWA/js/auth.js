@@ -1,144 +1,104 @@
-/**
- * ==========================================================
- * AUTHENTICATION
- * ==========================================================
- */
+/*
+==========================================================
+AUTHENTICATION SERVICE
+==========================================================
+*/
 
 const Auth = {
 
-    async login() {
+async login(phone){
 
-        const mobile =
-            document
-                .getElementById("mobile")
-                .value
-                .trim();
+phone=String(phone||"").trim();
 
-        if (!mobile) {
+if(phone===""){
 
-            alert(
-                "Please enter mobile number."
-            );
+Utils.showToast(
+"Please enter mobile number."
+);
 
-            return;
+return false;
 
-        }
+}
 
-        const button =
-            document.getElementById(
-                "loginBtn"
-            );
+if(phone.length!==10){
 
-        button.disabled = true;
+Utils.showToast(
+"Enter valid mobile number."
+);
 
-        button.innerText =
-            "Please wait...";
+return false;
 
-        try {
+}
 
-            const result =
-                await API.login(
-                    mobile
-                );
+try{
 
-            button.disabled = false;
+Utils.showLoading();
 
-            button.innerText =
-                "Login";
+const result=
+await API.login(phone);
 
-            if (!result.success) {
+Utils.hideLoading();
 
-                alert(
-                    result.message
-                );
+if(!result.success){
 
-                return;
+Utils.showToast(
+result.message ||
+"Login failed."
+);
 
-            }
+return false;
 
-            localStorage.setItem(
+}
 
-                "customer",
+Storage.setCustomer(
+result.customer
+);
 
-                JSON.stringify(
-                    result.customer
-                )
+App.customer=
+result.customer;
 
-            );
+return true;
 
-            window.location.href =
-                "dashboard.html";
+}
 
-        }
+catch(e){
 
-        catch (e) {
+Utils.hideLoading();
 
-            button.disabled = false;
+console.error(e);
 
-            button.innerText =
-                "Login";
+Utils.showToast(
+"Unable to connect to server."
+);
 
-            alert(
-                "Unable to connect to server."
-            );
+return false;
 
-            console.error(e);
+}
 
-        }
+},
 
-    },
+logout(){
 
+Storage.clear();
 
+App.customer=null;
 
-    logout() {
+App.currentView="";
 
-        localStorage.removeItem(
-            "customer"
-        );
+UI.renderLogin();
 
-        window.location.href =
-            "index.html";
+},
 
-    },
+getCustomer(){
 
+return Storage.getCustomer();
 
+},
 
-    getCustomer() {
+isLoggedIn(){
 
-        const customer =
-            localStorage.getItem(
-                "customer"
-            );
+return Storage.isLoggedIn();
 
-        if (!customer) {
-
-            return null;
-
-        }
-
-        return JSON.parse(customer);
-
-    },
-
-
-
-    isLoggedIn() {
-
-        return this.getCustomer() !== null;
-
-    }
+}
 
 };
-
-
-
-document
-    .getElementById("loginBtn")
-    .addEventListener(
-        "click",
-        function () {
-
-            Auth.login();
-
-        }
-    );
