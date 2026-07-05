@@ -1,107 +1,162 @@
-/**
- * ==========================================================
- * APPLICATION
- * ==========================================================
- */
+/*
+==========================================================
+APPLICATION CONTROLLER
+==========================================================
+*/
 
 const App = {
 
-    customer: null,
+customer:null,
 
+currentView:"",
 
+async initialize(){
 
-    async initialize() {
+UI.initialize();
 
-        this.customer =
-            Auth.getCustomer();
+const customer=
+Storage.getCustomer();
 
-        if (!this.customer) {
+if(!customer){
 
-            window.location.href =
-                "index.html";
+UI.renderLogin();
 
-            return;
+return;
 
-        }
+}
 
-        try {
+this.customer=customer;
 
-            const result =
-                await API.profile(
-                    this.customer.id
-                );
+await this.refreshProfile();
 
-            if (!result.success) {
+},
 
-                alert(
-                    result.message
-                );
+async refreshProfile(){
 
-                Auth.logout();
+Utils.showLoading();
 
-                return;
+try{
 
-            }
+const result=
+await API.profile(
+this.customer.customerId
+);
 
-            this.customer =
-                result.customer;
+Utils.hideLoading();
 
-            localStorage.setItem(
+if(!result.success){
 
-                "customer",
+Storage.clear();
 
-                JSON.stringify(
-                    this.customer
-                )
+UI.renderLogin();
 
-            );
+Utils.showToast(result.message);
 
-            this.updateHeader();
+return;
 
-        }
+}
 
-        catch (e) {
+this.customer=result.customer;
 
-            console.error(e);
+Storage.setCustomer(
+this.customer
+);
 
-            alert(
-                "Unable to load customer information."
-            );
+this.loadDashboard();
 
-        }
+}
 
-    },
+catch(e){
 
+Utils.hideLoading();
 
+console.error(e);
 
-    updateHeader() {
+UI.renderLogin();
 
-        const name =
-            document.getElementById(
-                "customerName"
-            );
+Utils.showToast(
+"Unable to connect to server."
+);
 
-        if (name) {
+}
 
-            name.textContent =
-                this.customer.name;
+},
 
-        }
+async loadDashboard(){
 
-    }
+this.currentView="dashboard";
+
+UI.renderDashboard(
+this.customer
+);
+
+await this.refreshDashboard();
+
+},
+
+async refreshDashboard(){
+
+try{
+
+const result=
+await API.profile(
+this.customer.customerId
+);
+
+if(!result.success){
+
+Utils.showToast(result.message);
+
+return;
+
+}
+
+this.customer=result.customer;
+
+Storage.setCustomer(
+this.customer
+);
+
+UI.renderDashboardData(
+this.customer
+);
+
+}
+
+catch(e){
+
+console.error(e);
+
+Utils.showToast(
+"Unable to refresh."
+);
+
+}
+
+},
+
+logout(){
+
+Storage.clear();
+
+this.customer=null;
+
+this.currentView="";
+
+UI.renderLogin();
+
+}
 
 };
 
-
-
 document.addEventListener(
 
-    "DOMContentLoaded",
+"DOMContentLoaded",
 
-    function () {
+function(){
 
-        App.initialize();
+App.initialize();
 
-    }
+}
 
 );
