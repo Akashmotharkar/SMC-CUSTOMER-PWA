@@ -39,7 +39,7 @@
 
     }
 
-    async function requestPermission(customerId) {
+    async function requestPermission(mobile) {
 
         try {
 
@@ -66,12 +66,9 @@
             }
 
             await API.saveFcmToken(
-
-                customerId,
-
-                currentToken
-
-            );
+                   mobile,
+                   currentToken
+               );
 
             return true;
 
@@ -87,7 +84,7 @@
 
     }
 
-    async function refreshToken(customerId) {
+    async function refreshToken(mobile) {
 
         try {
 
@@ -101,12 +98,9 @@
             if (currentToken) {
 
                 await API.saveFcmToken(
-
-                    customerId,
-
-                    currentToken
-
-                );
+                      mobile,
+                      currentToken
+                  );
 
             }
 
