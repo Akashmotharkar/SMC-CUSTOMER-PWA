@@ -1397,6 +1397,7 @@ if(loadSession()){
 showApp();
 
 await loadCustomer();
+await initializePush();
 
 }
 else{
@@ -1498,6 +1499,7 @@ saveSession();
 showApp();
 
 await loadCustomer();
+await initializePush();
 
 }
 
@@ -2158,23 +2160,107 @@ await loadCustomer();
 
 );
 
+/* =====================================================
+GLOBAL ERROR HANDLING
+===================================================== */
 
+window.addEventListener(
 
+"error",
 
+function(e){
 
+console.error(
 
+"Application Error",
 
+e.error||e.message
 
-  
+);
 
+}
 
+);
 
+window.addEventListener(
 
+"unhandledrejection",
 
+function(e){
 
+console.error(
 
+"Promise Error",
 
+e.reason
 
+);
 
+}
 
-  
+);
+
+/* =====================================================
+NETWORK STATUS
+===================================================== */
+
+window.addEventListener(
+
+"offline",
+
+function(){
+
+alert(
+
+"Internet connection lost."
+
+);
+
+}
+
+);
+
+window.addEventListener(
+
+"online",
+
+async function(){
+
+if(
+
+App.customer
+
+){
+
+await loadCustomer();
+
+}
+
+}
+
+);
+
+/* =====================================================
+FINAL STARTUP
+===================================================== */
+
+(async function(){
+
+try{
+
+await registerServiceWorker();
+
+}
+catch(e){
+
+console.error(e);
+
+}
+
+})();
+
+</script>
+
+</body>
+
+</html>
