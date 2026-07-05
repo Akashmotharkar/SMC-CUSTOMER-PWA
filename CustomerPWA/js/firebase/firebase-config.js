@@ -34,4 +34,4 @@ export const firebaseConfig = {
 
 export const VAPID_KEY =
 
-    "PASTE_YOUR_VAPID_PUBLIC_KEY_HERE";
+    "BOZL1I2DfoYy-e9ylNG-N5vRQtE9w9fGRJy5sPDnHE3hEmJwL8FpiulX684-wdl9Yo22JjiY-mmY7PN-N10BADs";
