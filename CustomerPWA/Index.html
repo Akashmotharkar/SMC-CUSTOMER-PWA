@@ -1199,6 +1199,20 @@ type="module"
 src="firebase-messaging.js">
 </script>
 
+<script type="module">
+
+import {
+
+registerDevice
+
+}
+
+from "./js/firebase/firebase-messaging.js";
+
+window.registerDevice = registerDevice;
+
+</script>
+
 <!-- ===================================================== -->
 <!-- APPLICATION -->
 <!-- ===================================================== -->
@@ -1538,7 +1552,28 @@ saveSession();
 showApp();
 
 await loadCustomer();
-await initializePush();
+
+try {
+
+    await registerDevice(
+
+        App.customer.mobile
+
+    );
+
+}
+
+catch (e) {
+
+    console.error(
+
+        "Push registration failed",
+
+        e
+
+    );
+
+}
 
 }
 
