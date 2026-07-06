@@ -1460,13 +1460,11 @@ setStatus("");
 
 try{
 
-const customer=
+const response =
+  await API.login(mobile);
 
-await apiLogin(
-
-mobile
-
-);
+const customer =
+  response.customer;
 
 hideLoading();
 
@@ -1508,52 +1506,6 @@ e.message
 }
 
 };
-
-async function apiLogin(
-
-mobile
-
-){
-
-const response=
-
-await fetch(
-
-CONFIG.API+
-
-"?action=login&mobile="+
-
-encodeURIComponent(
-
-mobile
-
-)
-
-);
-
-if(!response.ok){
-
-throw new Error(
-
-"Server unavailable."
-
-);
-
-}
-
-const data=
-
-await response.json();
-
-if(!data.success){
-
-return null;
-
-}
-
-return data.customer;
-
-}
 
 async function loadCustomer(){
 
@@ -1597,75 +1549,35 @@ e.message
 
 async function loadBill(){
 
-const response=
+const response =
+  await API.getBill(
+    App.customer.mobile
+  );
 
-await fetch(
-
-CONFIG.API+
-
-"?action=bill&id="+
-
-encodeURIComponent(
-
-App.customer.id
-
-)
-
-);
-
-const data=
-
-await response.json();
-
-App.bill=data;
+App.bill =
+  response;
 
 }
 
 async function loadNotice(){
 
-const response=
+const response =
+  await API.getNotice();
 
-await fetch(
-
-CONFIG.API+
-
-"?action=notice"
-
-);
-
-const data=
-
-await response.json();
-
-App.notice=data.notice;
+App.notice =
+  response.notice;
 
 }
 
 async function loadHistory(){
 
-const response=
+const response =
+  await API.getHistory(
+    App.customer.mobile
+  );
 
-await fetch(
-
-CONFIG.API+
-
-"?action=history&id="+
-
-encodeURIComponent(
-
-App.customer.id
-
-)
-
-);
-
-const data=
-
-await response.json();
-
-App.history=
-
-data.items||[];
+App.history =
+  response.items || [];
 
 }
 
@@ -2017,36 +1929,9 @@ token
 
 ){
 
-await fetch(
-
-CONFIG.API,
-
-{
-
-method:"POST",
-
-headers:{
-
-"Content-Type":
-
-"application/json"
-
-},
-
-body:JSON.stringify({
-
-action:"saveToken",
-
-customerId:
-
-App.customer.id,
-
-token:token
-
-})
-
-}
-
+await API.registerToken(
+  App.customer.mobile,
+  token
 );
 
 }
