@@ -7,15 +7,6 @@
 
 import {
 
-    doc,
-    setDoc,
-    serverTimestamp
-
-}
-from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
-
-import {
-
     getToken,
     onMessage
 
@@ -24,10 +15,10 @@ from "https://www.gstatic.com/firebasejs/10.13.2/firebase-messaging.js";
 
 import {
 
-    db,
     initializeMessaging
 
 }
+
 from "./firebase-app.js";
 
 import {
@@ -36,10 +27,6 @@ import {
 
 }
 from "./firebase-config.js";
-
-
-const COLLECTION =
-    "deviceTokens";
 
 
 const SERVICE_WORKER =
@@ -73,96 +60,119 @@ export async function registerDevice(
 
 ) {
 
-    if (!("Notification" in window)) {
+    if (
 
-        return null;
+        !mobileNumber
+
+    ) {
+
+        return false;
 
     }
+
+
+    if (
+
+        !("Notification" in window)
+
+    ) {
+
+        console.log(
+
+            "Notifications not supported."
+
+        );
+
+        return false;
+
+    }
+
 
     const granted =
+
         await requestPermission();
 
-    if (!granted) {
 
-        return null;
+    if (
+
+        !granted
+
+    ) {
+
+        console.log(
+
+            "Notification permission denied."
+
+        );
+
+        return false;
 
     }
+
 
     const registration =
+
         await registerServiceWorker();
 
+
     const messaging =
+
         await initializeMessaging();
 
-    if (!messaging) {
 
-        return null;
+    if (
+
+        !messaging
+
+    ) {
+
+        return false;
 
     }
 
+
     const token =
+
         await getToken(
 
             messaging,
 
             {
 
-                vapidKey: VAPID_KEY,
+                vapidKey:
+
+                    VAPID_KEY,
 
                 serviceWorkerRegistration:
+
                     registration
 
             }
 
         );
 
-    if (!token) {
 
-        return null;
+    if (
+
+        !token
+
+    ) {
+
+        return false;
 
     }
 
-    await setDoc(
 
-        doc(
+    await API.registerToken(
 
-            db,
+        mobileNumber,
 
-            COLLECTION,
-
-            mobileNumber
-
-        ),
-
-        {
-
-            token:
-
-                token,
-
-            mobile:
-
-                mobileNumber,
-
-            updated:
-
-                serverTimestamp(),
-
-            active:
-
-                true
-
-        },
-
-        {
-
-            merge: true
-
-        }
+        token
 
     );
 
-    return token;
+
+    return true;
 
 }
 
