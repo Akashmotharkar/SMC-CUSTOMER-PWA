@@ -1,59 +1,103 @@
 /* ==========================================================
-   API CLIENT
-   ========================================================== */
+ * API CLIENT
+ * ==========================================================
+ */
 
 (function () {
 
+    "use strict";
+
     const API = {};
+
+    /* ======================================================
+     * CONFIGURATION
+     * ====================================================== */
 
     const BASE_URL =
         "YOUR_APPS_SCRIPT_WEBAPP_URL";
 
-    async function get(params) {
 
-        const url =
-            BASE_URL + "?" +
-            new URLSearchParams(params);
+    /* ======================================================
+     * INTERNAL REQUEST
+     * ====================================================== */
+
+    async function request(method, params, body) {
+
+        let url = BASE_URL;
+
+        const options = {
+            method: method,
+            headers: {}
+        };
+
+        if (method === "GET") {
+
+            url += "?" + new URLSearchParams(params);
+
+        } else {
+
+            options.headers["Content-Type"] =
+                "application/json";
+
+            options.body =
+                JSON.stringify(body || {});
+        }
 
         const response =
-            await fetch(url);
+            await fetch(url, options);
 
-        return await response.json();
+        if (!response.ok) {
+
+            throw new Error(
+                "Server unavailable."
+            );
+
+        }
+
+        const json =
+            await response.json();
+
+        if (json.success === false) {
+
+            throw new Error(
+                json.message ||
+                "Request failed."
+            );
+
+        }
+
+        return json;
 
     }
 
-    async function post(body) {
 
-        const response =
-            await fetch(BASE_URL, {
+    /* ======================================================
+     * AUTH
+     * ====================================================== */
 
-                method: "POST",
+    API.login =
+        function (mobile) {
 
-                headers: {
-                    "Content-Type": "application/json"
-                },
+            return request(
 
-                body: JSON.stringify(body)
+                "POST",
 
-            });
+                null,
 
-        return await response.json();
+                {
 
-    }
+                    action: "login",
 
-    API.login = function (mobile) {
+                    mobile: mobile
 
-        return post({
+                }
 
-            action: "login",
+            );
 
-            mobile: mobile
+        };
 
-        });
 
-    };
-
-    API.saveFcmToken =
+    API.registerToken =
         function (
 
             mobile,
@@ -62,17 +106,30 @@
 
         ) {
 
-            return post({
+            return request(
 
-                action: "registerToken",
+                "POST",
 
-                mobile: mobile,
+                null,
 
-                token: token
+                {
 
-            });
+                    action: "registerToken",
+
+                    mobile: mobile,
+
+                    token: token
+
+                }
+
+            );
 
         };
+
+
+    /* ======================================================
+     * CUSTOMER
+     * ====================================================== */
 
     API.getBill =
         function (
@@ -85,54 +142,98 @@
 
         ) {
 
-            return get({
+            return request(
 
-                action: "bill",
+                "GET",
 
-                mobile: mobile,
+                {
 
-                month: month,
+                    action: "bill",
 
-                year: year
+                    mobile: mobile,
 
-            });
+                    month: month,
+
+                    year: year
+
+                }
+
+            );
 
         };
 
-    API.getNoticeBoard =
+
+    /* ======================================================
+     * NOTICE
+     * ====================================================== */
+
+    API.getNotice =
         function () {
 
-            return get({
+            return request(
 
-                action: "notice"
+                "GET",
 
-            });
+                {
+
+                    action: "notice"
+
+                }
+
+            );
+
+        };
+
+
+    /* ======================================================
+     * HISTORY
+     * ====================================================== */
+
+    API.getHistory =
+        function (
+
+            mobile
+
+        ) {
+
+            return request(
+
+                "GET",
+
+                {
+
+                    action: "history",
+
+                    mobile: mobile
+
+                }
+
+            );
 
         };
 
-    API.getNotificationHistory =
-        function (mobile) {
 
-            return get({
-
-                action: "history",
-
-                mobile: mobile
-
-            });
-
-        };
+    /* ======================================================
+     * CONFIG
+     * ====================================================== */
 
     API.getConfig =
         function () {
 
-            return get({
+            return request(
 
-                action: "config"
+                "GET",
 
-            });
+                {
+
+                    action: "config"
+
+                }
+
+            );
 
         };
+
 
     window.API = API;
 
