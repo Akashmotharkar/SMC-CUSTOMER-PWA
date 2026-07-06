@@ -1316,9 +1316,18 @@ localStorage.setItem(
 
 "customer",
 
-JSON.stringify(
-App.customer
-)
+JSON.stringify({
+
+id:
+App.customer.id,
+
+name:
+App.customer.name,
+
+mobile:
+App.customer.mobile
+
+})
 
 );
 
@@ -1341,6 +1350,35 @@ try{
 
 App.customer=
 JSON.parse(s);
+
+if (
+
+!App.customer.mobile
+
+&&
+
+App.customer.phone
+
+) {
+
+App.customer.mobile =
+App.customer.phone;
+
+}
+
+if (
+
+!App.customer.id
+
+||
+
+!App.customer.mobile
+
+){
+
+return false;
+
+}
 
 return true;
 
@@ -1365,6 +1403,8 @@ localStorage.removeItem(
 function logout(){
 
 clearSession();
+
+App.customer = null;
 
 location.reload();
 
@@ -1480,9 +1520,18 @@ return;
 
 }
 
-App.customer=
+App.customer = {
 
-customer;
+id:
+customer.id,
+
+name:
+customer.name,
+
+mobile:
+customer.mobile
+
+};
 
 saveSession();
 
