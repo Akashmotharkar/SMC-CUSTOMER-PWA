@@ -1,121 +1,197 @@
 /* ==========================================================
-   FIREBASE MESSAGING SERVICE WORKER
-   Customer PWA
-   ========================================================== */
+ * FIREBASE MESSAGING SERVICE WORKER
+ * Customer PWA
+ * ==========================================================
+ */
 
 importScripts(
-    "https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"
+  "https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"
 );
 
 importScripts(
-    "https://www.gstatic.com/firebasejs/10.13.2/firebase-messaging-compat.js"
+  "https://www.gstatic.com/firebasejs/10.13.2/firebase-messaging-compat.js"
 );
 
 
 /* ==========================================================
-   FIREBASE CONFIG
-   ========================================================== */
+ * FIREBASE CONFIG
+ * ==========================================================
+ */
 
 firebase.initializeApp({
 
-    apiKey: "AIzaSyAPBu9l8F8OQb7zMMRVKIquwLUla_QbFgc",
+  apiKey: "AIzaSyAPBu9l8F8OQb7zMMRVKIquwLUla_QbFgc",
 
-    authDomain:
-        "milkcollectionpwa-a2fb5.firebaseapp.com",
+  authDomain:
+    "milkcollectionpwa-a2fb5.firebaseapp.com",
 
-    projectId:
-        "milkcollectionpwa-a2fb5",
+  projectId:
+    "milkcollectionpwa-a2fb5",
 
-    storageBucket:
-        "milkcollectionpwa-a2fb5.firebasestorage.app",
+  storageBucket:
+    "milkcollectionpwa-a2fb5.firebasestorage.app",
 
-    messagingSenderId:
-        "191950335737",
+  messagingSenderId:
+    "191950335737",
 
-    appId:
-        "1:191950335737:web:cd727cbfa1c8604bd13c28"
+  appId:
+    "1:191950335737:web:cd727cbfa1c8604bd13c28"
 
 });
 
 
 const messaging =
-    firebase.messaging();
+  firebase.messaging();
 
 
 /* ==========================================================
-   BACKGROUND NOTIFICATION
-   ========================================================== */
+ * BACKGROUND MESSAGE
+ * ==========================================================
+ */
 
 messaging.onBackgroundMessage(function (payload) {
 
-    const notification =
-        payload.notification || {};
+  console.log(
+    "[firebase-messaging-sw] Background Message",
+    payload
+  );
 
-    self.registration.showNotification(
+  const notification =
+    payload.notification || {};
 
-        notification.title || "Milk Collection",
+  const data =
+    payload.data || {};
+
+  self.registration.showNotification(
+
+    notification.title || "Milk Collection",
+
+    {
+
+      body:
+
+        notification.body || "",
+
+      icon:
+
+        "/icons/icon-192.png",
+
+      badge:
+
+        "/icons/icon-192.png",
+
+      tag:
+
+        data.type || "milk",
+
+      renotify:
+
+        true,
+
+      requireInteraction:
+
+        false,
+
+      data:
 
         {
 
-            body:
-                notification.body || "",
+          url:
 
-            icon:
-                "/icons/icon-192.png",
+            "/",
 
-            badge:
-                "/icons/badge.png",
-
-            data:
-                payload.data || {}
+          ...data
 
         }
 
-    );
+    }
+
+  );
 
 });
 
 
 /* ==========================================================
-   NOTIFICATION CLICK
-   ========================================================== */
+ * NOTIFICATION CLICK
+ * ==========================================================
+ */
 
 self.addEventListener(
 
-    "notificationclick",
+  "notificationclick",
 
-    function (event) {
+  function (event) {
 
-        event.notification.close();
+    event.notification.close();
 
-        event.waitUntil(
+    const targetUrl =
 
-            clients.matchAll({
+      event.notification.data.url || "/";
 
-                type: "window",
+    event.waitUntil(
 
-                includeUncontrolled: true
+      clients.matchAll({
 
-            })
+        type: "window",
 
-            .then(function (clientList) {
+        includeUncontrolled: true
 
-                for (const client of clientList) {
+      })
 
-                    if ("focus" in client) {
+      .then(function (clientList) {
 
-                        return client.focus();
+        for (
 
-                    }
+          const client of clientList
 
-                }
+        ) {
 
-                return clients.openWindow("/");
+          if (
 
-            })
+            client.url.includes(targetUrl)
+
+          ) {
+
+            return client.focus();
+
+          }
+
+        }
+
+        return clients.openWindow(
+
+          targetUrl
 
         );
 
-    }
+      })
+
+    );
+
+  }
+
+);
+
+
+/* ==========================================================
+ * NOTIFICATION CLOSE
+ * ==========================================================
+ */
+
+self.addEventListener(
+
+  "notificationclose",
+
+  function (event) {
+
+    console.log(
+
+      "Notification dismissed",
+
+      event.notification.tag
+
+    );
+
+  }
 
 );
