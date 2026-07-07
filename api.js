@@ -1,4 +1,4 @@
-alert("api.js loaded 2");
+alert("api.js loaded 3");
 /* ==========================================================
  * API CLIENT
  * ==========================================================
@@ -24,8 +24,6 @@ alert("api.js loaded 2");
 
     async function request(method, params, body) {
 
-        alert("request() called");
-
         let url = BASE_URL;
 
         const options = {
@@ -49,13 +47,6 @@ alert("api.js loaded 2");
                 let response;
         
         try {
-            
-            console.log("Request URL:", url);
-            alert(
-                method +
-                "\n\n" +
-                url
-            );
         
             response = await fetch(
                 url,
