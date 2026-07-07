@@ -43,9 +43,24 @@ alert("api.js loaded");
             options.body =
                 JSON.stringify(body || {});
         }
-
-        const response =
-            await fetch(url, options);
+        
+                let response;
+        
+        try {
+        
+            response = await fetch(url, options);
+        
+        }
+        
+        catch (err) {
+        
+            console.error("Fetch Error:", err);
+        
+            alert(err.message);
+        
+            throw err;
+        
+        }
 
         if (!response.ok) {
 
