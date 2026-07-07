@@ -889,7 +889,7 @@ No notice available.
 
 <div class="bill-title">
 
-श्री कृष्ण दूध कलेक्शन
+Milk Collection
 
 </div>
 
@@ -1146,11 +1146,11 @@ UPI / Call
 
 <br>
 
-9422552827
+Loading...1
 
 <br>
 
-7020739198
+Loading...2
 
 </div>
 
@@ -1217,6 +1217,8 @@ bill:null,
 notice:null,
 
 history:[],
+
+config:null,
 
 loading:false,
 
@@ -1628,7 +1630,9 @@ loadBill(),
 
 loadNotice(),
 
-loadHistory()
+loadHistory(),
+
+loadConfig()
 
 ]);
 
@@ -1729,6 +1733,28 @@ App.history =
 
 }
 
+async function loadConfig(){
+
+const response =
+    await API.getConfig();
+
+if(!response.success){
+
+throw new Error(
+
+response.message ||
+
+"Unable to load configuration."
+
+);
+
+}
+
+App.config =
+    response.data;
+
+}
+
 function renderAll(){
 
 document.getElementById(
@@ -1739,6 +1765,8 @@ App.customer.name;
 renderBill();
 
 renderNotice();
+
+renderConfig();
 
 renderHistory();
 
@@ -1876,6 +1904,54 @@ tr
 
 }
 
+function renderConfig(){
+
+if(!App.config){
+
+return;
+
+}
+
+document.querySelector(
+
+".bill-title"
+
+).textContent =
+
+App.config.dairyName ||
+
+"Milk Collection";
+
+document.getElementById(
+
+"upiQr"
+
+).src =
+
+App.config.qrImage ||
+
+"";
+
+document.querySelector(
+
+".footer"
+
+).innerHTML =
+
+[
+App.config.footerLine1,
+App.config.footerLine2,
+App.config.footerLine3,
+App.config.footerLine4,
+App.config.footerLine5
+]
+
+.filter(Boolean)
+
+.join("<br>");
+
+}
+    
 function renderHistory(){
 
 const list=
