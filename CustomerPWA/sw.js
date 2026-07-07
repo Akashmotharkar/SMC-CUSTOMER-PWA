@@ -2,7 +2,7 @@
    CUSTOMER PWA SERVICE WORKER
    ========================================================== */
 
-const CACHE_NAME = "customer-pwa-v1.0.0";
+const CACHE_NAME = "customer-pwa-v1.0.1";
 
 const ASSETS = [
 
@@ -12,15 +12,7 @@ const ASSETS = [
 
     "/manifest.json",
 
-    "/css/style.css",
-
-    "/js/app.js",
-
     "/js/api.js",
-
-    "/js/auth.js",
-
-    "/js/ui.js",
 
     "/js/firebase/firebase-config.js",
 
@@ -28,17 +20,25 @@ const ASSETS = [
 
     "/js/firebase/firebase-messaging.js",
 
+    "/firebase-messaging-sw.js",
+
     "/icons/icon-72.png",
+
     "/icons/icon-96.png",
+
     "/icons/icon-128.png",
+
     "/icons/icon-144.png",
+
     "/icons/icon-152.png",
+
     "/icons/icon-192.png",
+
     "/icons/icon-384.png",
+
     "/icons/icon-512.png"
 
 ];
-
 
 /* ==========================================================
    INSTALL
@@ -135,6 +135,24 @@ self.addEventListener(
         }
 
         event.respondWith(
+
+           const url =
+            
+                new URL(
+            
+                    event.request.url
+            
+                );
+            
+            if (
+            
+                url.searchParams.has("action")
+            
+            ) {
+            
+                return;
+            
+            }
 
             caches.match(event.request)
 
