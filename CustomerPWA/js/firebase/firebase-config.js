@@ -7,7 +7,7 @@
 
 export const firebaseConfig = {
 
-    apiKey: "AIzaSyA",
+    apiKey: "AIzaSyAPBu9l8F8OQb7zMMRVKIquwLUla_QbFgc",
 
     authDomain:
         "milkcollectionpwa-a2fb5.firebaseapp.com",
