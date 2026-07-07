@@ -581,9 +581,9 @@ background:#fafafa;
 
 border:1px solid #ddd;
 
-padding:10px;
+padding:6px;
 
-font-size:14px;
+font-size:13px;
 
 }
 
@@ -591,11 +591,11 @@ font-size:14px;
 
 border:1px solid #ddd;
 
-padding:8px;
+padding:5px;
 
 text-align:center;
 
-font-size:14px;
+font-size:13px;
 
 }
 
@@ -1117,10 +1117,22 @@ Qty
 
 </th>
 
+<th>
+
+Day
+
+</th>
+
+<th>
+
+Qty
+
+</th>
+
 </tr>
 
 </thead>
-
+    
 <tbody>
 
 </tbody>
@@ -2203,7 +2215,8 @@ document.getElementById(
 ).src=
 b.qr;
 
-const tbody=
+
+const tbody =
 
 document.querySelector(
 
@@ -2211,39 +2224,72 @@ document.querySelector(
 
 );
 
-tbody.innerHTML="";
+tbody.innerHTML = "";
 
-(b.days || []).forEach(
+const days =
 
-function(day){
+b.days || [];
 
-const tr=
+for (
+
+let i = 0;
+
+i < 16;
+
+i++
+
+) {
+
+const left =
+
+days[i];
+
+const right =
+
+days[i + 16];
+
+const tr =
 
 document.createElement(
+
 "tr"
+
 );
 
-tr.innerHTML=
+tr.innerHTML =
 
-"<td>"+
+"<td>" +
 
-day.day+
+(left ? left.day : "") +
 
-"</td>"+
+"</td>" +
 
-"<td>"+
+"<td>" +
 
-day.qty+
+(left ? left.qty : "") +
+
+"</td>" +
+
+"<td>" +
+
+(right ? right.day : "") +
+
+"</td>" +
+
+"<td>" +
+
+(right ? right.qty : "") +
 
 "</td>";
 
 tbody.appendChild(
+
 tr
+
 );
 
 }
 
-);
 
 }
 
