@@ -98,25 +98,23 @@ alert("api.js loaded");
      * ====================================================== */
 
     API.login =
-        function (mobile) {
+    function (mobile) {
 
-            return request(
+        return request(
 
-                "POST",
+            "GET",
 
-                null,
+            {
 
-                {
+                action: "login",
 
-                    action: "login",
+                mobile: mobile
 
-                    mobile: mobile
+            }
 
-                }
+        );
 
-            );
-
-        };
+    };
 
 
     API.registerToken =
