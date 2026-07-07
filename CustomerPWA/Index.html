@@ -1210,6 +1210,8 @@ window.registerDevice = registerDevice;
 
 </script>
 
+<script src="./js/api.js"></script>
+
 <!-- ===================================================== -->
 <!-- APPLICATION -->
 <!-- ===================================================== -->
@@ -1438,7 +1440,22 @@ if(loadSession()){
 showApp();
 
 await loadCustomer();
-await initializePush();
+
+try{
+
+await registerDevice(
+
+App.customer.mobile
+
+);
+
+}
+
+catch(e){
+
+console.error(e);
+
+}
 
 }
 else{
@@ -1630,8 +1647,14 @@ async function loadBill(){
 
 const response =
   await API.getBill(
-    App.customer.mobile
-  );
+
+mobile,
+
+month,
+
+year
+
+)
 
 App.bill =
   response;
@@ -1882,11 +1905,9 @@ div
 
 function formatMoney(v){
 
-return
+return Number(
 
-Number(
-
-v||0
+v || 0
 
 ).toFixed(2);
 
@@ -1999,12 +2020,6 @@ await loadCustomer();
 /* =====================================================
 INITIALIZATION
 ===================================================== */
-
-(async function(){
-
-await registerServiceWorker();
-
-})();
 
 document.addEventListener(
 
