@@ -1229,8 +1229,6 @@ notice:null,
 
 history:[],
 
-token:null,
-
 loading:false
 
 };
@@ -1971,23 +1969,6 @@ await navigator.serviceWorker.register(
 
 "sw.js"
 
-);
-
-}
-
-/* =====================================================
-FIREBASE PUSH
-===================================================== */
-
-async function savePushToken(
-
-token
-
-){
-
-await API.registerToken(
-  App.customer.mobile,
-  token
 );
 
 }
