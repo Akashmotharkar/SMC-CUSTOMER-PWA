@@ -724,6 +724,112 @@ color:var(--primary);
 }
 
 /* ===========================
+INSTALL POPUP
+=========================== */
+
+#installPopup{
+
+position:fixed;
+
+inset:0;
+
+background:rgba(0,0,0,.45);
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+z-index:9998;
+
+}
+
+.install-card{
+
+width:90%;
+
+max-width:360px;
+
+background:white;
+
+border-radius:18px;
+
+padding:24px;
+
+box-shadow:0 12px 30px rgba(0,0,0,.25);
+
+text-align:center;
+
+}
+
+.install-title{
+
+font-size:22px;
+
+font-weight:bold;
+
+color:var(--primary);
+
+margin-bottom:14px;
+
+}
+
+.install-message{
+
+font-size:15px;
+
+line-height:1.6;
+
+color:#555;
+
+margin-bottom:22px;
+
+}
+
+.install-buttons{
+
+display:flex;
+
+gap:12px;
+
+}
+
+.install-buttons button{
+
+flex:1;
+
+height:46px;
+
+border:none;
+
+border-radius:10px;
+
+font-size:16px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+}
+
+#installLater{
+
+background:#eeeeee;
+
+color:#333;
+
+}
+
+#installNow{
+
+background:var(--primary);
+
+color:white;
+
+}
+
+/* ===========================
 MOBILE
 =========================== */
 
@@ -787,6 +893,44 @@ Loading...
 
 <!-- ===================================================== -->
 <!-- LOGIN -->
+
+<div id="installPopup" class="hidden">
+
+    <div class="install-card">
+
+        <div class="install-title">
+
+            Install Milk Collection
+
+        </div>
+
+        <div class="install-message">
+
+            Install the app for faster access,
+            notifications and offline support.
+
+        </div>
+
+        <div class="install-buttons">
+
+            <button id="installLater">
+
+                Later
+
+            </button>
+
+            <button id="installNow">
+
+                Install
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+    
 <!-- ===================================================== -->
 
 <div id="loginScreen">
@@ -1284,6 +1428,80 @@ UI.loading.classList.add(
 
 }
 
+function showInstallPopup(){
+
+if(
+
+!installAvailable ||
+
+window.matchMedia(
+
+"(display-mode: standalone)"
+
+).matches
+
+){
+
+return;
+
+}
+
+const today =
+
+new Date()
+
+.toISOString()
+
+.substring(0,10);
+
+if(
+
+localStorage.getItem(
+
+INSTALL_KEY
+
+) === today
+
+){
+
+return;
+
+}
+
+document
+
+.getElementById(
+
+"installPopup"
+
+)
+
+.classList.remove(
+
+"hidden"
+
+);
+
+}
+
+function hideInstallPopup(){
+
+document
+
+.getElementById(
+
+"installPopup"
+
+)
+
+.classList.add(
+
+"hidden"
+
+);
+
+}
+
 function showLogin(){
 
 UI.app.classList.add(
@@ -1418,6 +1636,92 @@ location.reload();
 UI.logoutButton.onclick=
 logout;
 
+document
+
+.getElementById(
+
+"installLater"
+
+)
+
+.onclick = function(){
+
+const today =
+
+new Date()
+
+.toISOString()
+
+.substring(0,10);
+
+localStorage.setItem(
+
+INSTALL_KEY,
+
+today
+
+);
+
+hideInstallPopup();
+
+};
+
+document
+
+.getElementById(
+
+"installNow"
+
+)
+
+.onclick = async function(){
+
+if(
+
+!deferredPrompt
+
+){
+
+return;
+
+}
+
+hideInstallPopup();
+
+await deferredPrompt.prompt();
+
+const choice =
+
+await deferredPrompt.userChoice;
+
+deferredPrompt = null;
+
+if(
+
+choice.outcome !== "accepted"
+
+){
+
+const today =
+
+new Date()
+
+.toISOString()
+
+.substring(0,10);
+
+localStorage.setItem(
+
+INSTALL_KEY,
+
+today
+
+);
+
+}
+
+};
+
 /* =====================================================
 APP START
 ===================================================== */
@@ -1425,6 +1729,28 @@ APP START
 document.addEventListener(
 "DOMContentLoaded",
 initialize
+);
+
+window.addEventListener(
+
+"appinstalled",
+
+function(){
+
+hideInstallPopup();
+
+localStorage.removeItem(
+
+INSTALL_KEY
+
+);
+
+deferredPrompt = null;
+
+installAvailable = false;
+
+}
+
 );
 
 async function initialize(){
@@ -2092,6 +2418,12 @@ PWA INSTALL
 
 let deferredPrompt = null;
 
+let installAvailable = false;
+
+let installDismissedToday = false;
+
+const INSTALL_KEY = "installPromptDate";
+
 window.addEventListener(
 
 "beforeinstallprompt",
@@ -2101,6 +2433,10 @@ function(e){
 e.preventDefault();
 
 deferredPrompt = e;
+
+installAvailable = true;
+
+showInstallPopup();
 
 }
 
