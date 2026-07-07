@@ -1979,34 +1979,6 @@ await navigator.serviceWorker.register(
 FIREBASE PUSH
 ===================================================== */
 
-async function initializePush(){
-
-try{
-
-const token=
-
-await window.FirebaseMessaging.getToken();
-    
-if(!token){
-
-return;
-
-}
-
-App.token=token;
-
-await savePushToken(token);
-
-}
-
-catch(e){
-
-console.log(e);
-
-}
-
-}
-
 async function savePushToken(
 
 token
@@ -2019,27 +1991,6 @@ await API.registerToken(
 );
 
 }
-
-window.FirebaseMessaging.onMessage(
-
-async function(payload){
-
-console.log("FCM Message", payload);
-
-try{
-
-await loadCustomer();
-
-}
-catch(e){
-
-console.error(e);
-
-}
-
-}
-
-);
 
 /* =====================================================
 AUTO REFRESH
@@ -2076,26 +2027,6 @@ INITIALIZATION
 await registerServiceWorker();
 
 })();
-
-window.addEventListener(
-
-"load",
-
-async function(){
-
-if(
-
-App.customer
-
-){
-
-await initializePush();
-
-}
-
-}
-
-);
 
 document.addEventListener(
 
