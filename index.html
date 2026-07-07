@@ -1614,61 +1614,62 @@ e.message
 
 };
 
-async function loadCustomer(){
+async function loadCustomer(showLoader = true){
 
-showLoading(
+    if(showLoader){
 
-"Loading..."
+        showLoading("Loading...");
 
-);
+    }
 
-try{
+    try{
 
-await Promise.all([
+        await Promise.all([
 
-loadBill(),
+            loadBill(),
 
-loadNotice(),
+            loadNotice(),
 
-loadHistory()
+            loadHistory()
 
-]);
+        ]);
 
-try{
+        try{
 
-await loadConfig();
+            await loadConfig();
 
-}
+        }
 
-catch(e){
+        catch(e){
 
-console.error(
+            console.error(
+                "Configuration",
+                e
+            );
 
-"Configuration",
+        }
 
-e
+        renderAll();
 
-);
+        if(showLoader){
 
-}
+            hideLoading();
 
-renderAll();
+        }
 
-hideLoading();
+    }
 
-}
+    catch(e){
 
-catch(e){
+        if(showLoader){
 
-hideLoading();
+            hideLoading();
 
-alert(
+        }
 
-e.message
+        alert(e.message);
 
-);
-
-}
+    }
 
 }
 
@@ -2153,7 +2154,7 @@ try{
 
 App.refreshing = true;
 
-await loadCustomer();
+await loadCustomer(false);
 
 }
 
@@ -2195,7 +2196,7 @@ App.customer
 
 ){
 
-await loadCustomer();
+await loadCustomer(false);
 
 }
 
@@ -2275,7 +2276,7 @@ App.customer
 
 ){
 
-await loadCustomer();
+await loadCustomer(false);
 
 }
 
