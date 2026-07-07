@@ -135,8 +135,12 @@ self.addEventListener(
         }
 
         event.respondWith(
-
-           const url =
+      
+          caches.match(
+      
+              event.request
+      
+          )
             
                 new URL(
             
