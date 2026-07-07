@@ -45,7 +45,25 @@ async function requestPermission() {
 
 async function registerServiceWorker() {
 
-    return await navigator.serviceWorker.register(
+    const existing =
+
+        await navigator.serviceWorker.getRegistration(
+
+            SERVICE_WORKER
+
+        );
+
+    if (
+
+        existing
+
+    ) {
+
+        return existing;
+
+    }
+
+    return navigator.serviceWorker.register(
 
         SERVICE_WORKER
 
@@ -163,6 +181,8 @@ export async function registerDevice(
     }
 
 
+    const response =
+
     await API.registerToken(
 
         mobileNumber,
@@ -171,8 +191,29 @@ export async function registerDevice(
 
     );
 
+if (
 
-    return true;
+    !response.success
+
+) {
+
+    console.error(
+
+        response.message
+
+    );
+
+    return false;
+
+}
+
+console.log(
+
+    "Firebase token registered."
+
+);
+
+return true;
 
 }
 
