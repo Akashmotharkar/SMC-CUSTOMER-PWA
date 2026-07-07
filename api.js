@@ -48,7 +48,13 @@ alert("api.js loaded");
         
         try {
         
-            response = await fetch(url, options);
+            response = await fetch(
+                url,
+                {
+                    ...options,
+                    redirect: "follow"
+                }
+            );
         
         }
         
