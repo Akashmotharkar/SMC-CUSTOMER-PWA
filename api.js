@@ -14,7 +14,7 @@
      * ====================================================== */
 
     const BASE_URL =
-        "YOUR_APPS_SCRIPT_WEBAPP_URL";
+        "https://script.google.com/macros/s/AKfycbzMhJrNMURve4OeTjECogdkzxUNJV8O5UN4k60EP2wP1V1Kd-eFDKVzYD4Rt5jL9A-w/exec";
 
 
     /* ======================================================
