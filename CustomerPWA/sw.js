@@ -142,11 +142,23 @@ self.addEventListener(
       
           )
             
-                new URL(
+           const url =     
+           new URL(
             
                     event.request.url
             
                 );
+                      if (
+               
+                   url.origin !==
+               
+                   self.location.origin
+               
+               ) {
+               
+                   return;
+               
+               }
             
             if (
             
@@ -176,10 +188,35 @@ self.addEventListener(
 
                     .then(networkResponse => {
 
-                        const copy =
-                            networkResponse.clone();
-
-                        caches.open(
+                        if (
+                        
+                            networkResponse.ok
+                        
+                        ) {
+                        
+                            const copy =
+                        
+                                networkResponse.clone();
+                        
+                            caches.open(
+                        
+                                CACHE_NAME
+                        
+                            )
+                        
+                            .then(cache => {
+                        
+                                cache.put(
+                        
+                                    event.request,
+                        
+                                    copy
+                        
+                                );
+                        
+                            });
+                        
+                        }
 
                             CACHE_NAME
 
@@ -202,14 +239,24 @@ self.addEventListener(
                     })
 
                     .catch(() => {
-
-                        return caches.match(
-
-                            "/index.html"
-
-                        );
-
-                    });
+                  
+                      if (
+                  
+                          event.request.mode ===
+                  
+                          "navigate"
+                  
+                      ) {
+                  
+                          return caches.match(
+                  
+                              "/index.html"
+                  
+                          );
+                  
+                      }
+                  
+                  });
 
                 })
 
