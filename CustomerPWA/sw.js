@@ -134,89 +134,75 @@ self.addEventListener(
 
         }
 
+        const url =
+
+            new URL(
+
+                event.request.url
+
+            );
+
+        /* Don't cache external requests */
+
+        if (
+
+            url.origin !==
+
+            self.location.origin
+
+        ) {
+
+            return;
+
+        }
+
+        /* Don't cache Apps Script API */
+
+        if (
+
+            url.searchParams.has("action")
+
+        ) {
+
+            return;
+
+        }
+
         event.respondWith(
-      
-          caches.match(
-      
-              event.request
-      
-          )
-            
-           const url =     
-           new URL(
-            
-                    event.request.url
-            
-                );
-                      if (
-               
-                   url.origin !==
-               
-                   self.location.origin
-               
-               ) {
-               
-                   return;
-               
-               }
-            
-            if (
-            
-                url.searchParams.has("action")
-            
-            ) {
-            
-                return;
-            
-            }
 
-            caches.match(event.request)
+            caches.match(
 
-                .then(response => {
+                event.request
 
-                    if (response) {
+            )
 
-                        return response;
+            .then(response => {
 
-                    }
+                if (
 
-                    return fetch(
+                    response
 
-                        event.request
+                ) {
 
-                    )
+                    return response;
 
-                    .then(networkResponse => {
+                }
 
-                        if (
-                        
-                            networkResponse.ok
-                        
-                        ) {
-                        
-                            const copy =
-                        
-                                networkResponse.clone();
-                        
-                            caches.open(
-                        
-                                CACHE_NAME
-                        
-                            )
-                        
-                            .then(cache => {
-                        
-                                cache.put(
-                        
-                                    event.request,
-                        
-                                    copy
-                        
-                                );
-                        
-                            });
-                        
-                        }
+                return fetch(
+
+                    event.request
+
+                )
+
+                .then(networkResponse => {
+
+                    if (
+
+                        networkResponse.ok
+
+                    ) {
+
+                        caches.open(
 
                             CACHE_NAME
 
@@ -228,44 +214,45 @@ self.addEventListener(
 
                                 event.request,
 
-                                copy
+                                networkResponse.clone()
 
                             );
 
                         });
 
-                        return networkResponse;
+                    }
 
-                    })
-
-                    .catch(() => {
-                  
-                      if (
-                  
-                          event.request.mode ===
-                  
-                          "navigate"
-                  
-                      ) {
-                  
-                          return caches.match(
-                  
-                              "/index.html"
-                  
-                          );
-                  
-                      }
-                  
-                  });
+                    return networkResponse;
 
                 })
+
+                .catch(() => {
+
+                    if (
+
+                        event.request.mode ===
+
+                        "navigate"
+
+                    ) {
+
+                        return caches.match(
+
+                            "/index.html"
+
+                        );
+
+                    }
+
+                });
+
+            })
 
         );
 
     }
 
 );
-
 
 /* ==========================================================
    MESSAGE
