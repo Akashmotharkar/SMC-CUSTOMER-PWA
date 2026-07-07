@@ -12,7 +12,7 @@ const ASSETS = [
 
     "/manifest.json",
 
-    "/js/api.js",
+    "/api.js",
 
     "/js/firebase/firebase-config.js",
 
