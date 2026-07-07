@@ -1630,11 +1630,27 @@ loadBill(),
 
 loadNotice(),
 
-loadHistory(),
-
-loadConfig()
+loadHistory()
 
 ]);
+
+try{
+
+await loadConfig();
+
+}
+
+catch(e){
+
+console.error(
+
+"Configuration",
+
+e
+
+);
+
+}
 
 renderAll();
 
