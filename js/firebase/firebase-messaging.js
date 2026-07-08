@@ -30,7 +30,7 @@ from "./firebase-config.js";
 
 
 const SERVICE_WORKER =
-    "/firebase-messaging-sw.js";
+    "firebase-messaging-sw.js";
 
 
 async function requestPermission() {
