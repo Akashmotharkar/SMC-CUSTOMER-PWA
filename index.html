@@ -775,17 +775,17 @@ background:#fafafa;
 
 display:flex;
 
-justify-content:space-between;
-
 align-items:center;
 
-gap:20px;
+gap:16px;
 
-padding:20px;
+padding:12px;
 
 }
 
 .qr-box{
+
+width:140px;
 
 display:flex;
 
@@ -793,23 +793,29 @@ flex-direction:column;
 
 align-items:center;
 
+flex-shrink:0;
+
 }
 
 .qr-box img{
 
-width:170px;
+width:120px;
 
-height:170px;
+height:120px;
+
+border-radius:8px;
 
 }
 
 .scan-text{
 
-margin-top:8px;
+margin-bottom:10px;
 
-font-size:13px;
+font-size:18px;
 
 font-weight:bold;
+
+color:var(--primary);
 
 }
 
@@ -821,9 +827,9 @@ display:flex;
 
 flex-direction:column;
 
-gap:12px;
+gap:8px;
 
-font-size:18px;
+font-size:15px;
 
 }
 
@@ -833,15 +839,25 @@ display:flex;
 
 justify-content:space-between;
 
+align-items:center;
+
+padding:6px 0;
+
+border-bottom:1px solid #eeeeee;
+
 }
 
 .total-final{
 
-font-size:24px;
+font-size:20px;
 
 font-weight:bold;
 
 color:var(--primary);
+
+border-bottom:none;
+
+padding-top:10px;
 
 }
 
@@ -1298,134 +1314,107 @@ Qty
 
 </table>
 
-</div>
-
-<div class="bill-section">
-
-<div class="bill-row">
-
-<div class="bill-label">
-
-Rate
-
-</div>
-
-<div
-class="bill-value"
-id="rate">
-
-0
-
-</div>
-
-</div>
-
-<div class="bill-row">
-
-<div class="bill-label">
-
-Milk Amount
-
-</div>
-
-<div
-class="bill-value"
-id="amount">
-
-0.00
-
-</div>
-
-</div>
-
-<div class="bill-row">
-
-<div class="bill-label">
-
-Balance
-
-</div>
-
-<div
-class="bill-value"
-id="balance">
-
-0.00
-
-</div>
-
-</div>
-
-</div>
-
+</div>    
+    
 <div class="payment-box">
 
-<div class="qr-box">
+    <div class="qr-box">
 
-<img
-id="upiQr"
-src="">
+        <div class="scan-text">
 
-<div class="scan-text">
+            Scan & Pay
 
-SCAN TO PAY
+        </div>
 
-</div>
+        <img
+            id="upiQr"
+            src="">
 
-</div>
+    </div>
 
-<div class="total-box">
+    <div class="total-box">
 
-<div class="total-row">
+        <div class="total-row">
 
-<div>
+            <span>Total Quantity</span>
 
-Total Quantity
+            <span id="totalQty2">
 
-</div>
+                0
 
-<div
-id="totalQty2">
+            </span>
 
-0
+        </div>
 
-</div>
+        <div class="total-row">
 
-</div>
+            <span>Rate / Ltr</span>
 
-<div class="total-row">
+            <span>
 
-<div>
+                ₹<span id="rate2">
 
-Rate
+                    0
 
-</div>
+                </span>
 
-<div
-id="rate2">
+            </span>
 
-0
+        </div>
 
-</div>
+        <div class="total-row">
 
-</div>
+            <span>Milk Amount</span>
 
-<div class="total-row total-final">
+            <span>
 
-<div>
+                ₹<span id="amount">
 
-Total Amount
+                    0.00
 
-</div>
+                </span>
 
-<div
-id="grandTotal">
+            </span>
 
-0.00
+        </div>
 
-</div>
+        <div class="total-row">
 
-</div>
+            <span>Balance</span>
+
+            <span>
+
+                ₹<span id="balance">
+
+                    0.00
+
+                </span>
+
+            </span>
+
+        </div>
+
+        <div class="total-row total-final">
+
+            <span>
+
+                Total Amount
+
+            </span>
+
+            <span>
+
+                ₹<span id="grandTotal">
+
+                    0.00
+
+                </span>
+
+            </span>
+
+        </div>
+
+    </div>
 
 </div>
 
