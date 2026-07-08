@@ -115,37 +115,7 @@
         );
 
     };
-
-
-    /*API.registerToken =
-        function (
-
-            mobile,
-
-            token
-
-        ) {
-
-            return request(
-
-                "POST",
-
-                null,
-
-                {
-
-                    action: "registerToken",
-
-                    mobile: mobile,
-
-                    token: token
-
-                }
-
-            );
-
-        };*/
-    
+ 
     API.registerToken = function (mobile, token) {
 
     return request(
