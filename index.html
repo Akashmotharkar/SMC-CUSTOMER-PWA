@@ -348,100 +348,6 @@ overflow:hidden;
 }
 
 /* ===========================
-LEFT PANEL
-=========================== */
-
-#noticePanel{
-
-width:280px;
-
-background:var(--notice);
-
-border-right:1px solid var(--border);
-
-display:flex;
-
-flex-direction:column;
-
-overflow:hidden;
-
-}
-
-.panel-title{
-
-height:48px;
-
-display:flex;
-
-align-items:center;
-
-padding:0 16px;
-
-font-size:18px;
-
-font-weight:bold;
-
-border-bottom:1px solid var(--border);
-
-}
-
-#noticeContent{
-
-flex:1;
-
-overflow:auto;
-
-padding:16px;
-
-white-space:pre-wrap;
-
-line-height:1.6;
-
-font-size:15px;
-
-}
-
-#noticeHeader{
-
-cursor:pointer;
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-user-select:none;
-
-}
-
-#noticeArrow{
-
-font-size:18px;
-
-transition:.25s;
-
-}
-
-#noticePanel.collapsed #noticeContent{
-
-display:none;
-
-}
-
-#noticePanel.collapsed{
-
-height:48px !important;
-
-}
-
-#noticePanel.collapsed #noticeArrow{
-
-transform:rotate(-90deg);
-
-}
-
-/* ===========================
 CENTER BILL
 =========================== */
 
@@ -459,7 +365,7 @@ overflow:auto;
 
 background:#eeeeee;
 
-padding:16px;
+padding:16px 16px 70px;
 
 }
 
@@ -594,6 +500,90 @@ font-size:12px;
 color:#777;
 
 text-align:right;
+
+}
+
+/* ===========================
+BOTTOM SHEET
+=========================== */
+
+#bottomSheet{
+
+position:fixed;
+
+left:0;
+
+right:0;
+
+bottom:0;
+
+height:52px;
+
+background:white;
+
+border-top:1px solid #ddd;
+
+box-shadow:0 -4px 12px rgba(0,0,0,.15);
+
+transition:.25s;
+
+z-index:999;
+
+display:flex;
+
+flex-direction:column;
+
+}
+
+#bottomSheet.open{
+
+height:45vh;
+
+}
+
+#sheetHandle{
+
+height:52px;
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-evenly;
+
+font-weight:bold;
+
+border-bottom:1px solid #eee;
+
+background:#fafafa;
+
+cursor:pointer;
+
+}
+
+.sheet-tab{
+
+flex:1;
+
+text-align:center;
+
+padding:14px;
+
+}
+
+.sheet-tab.active{
+
+color:var(--primary);
+
+}
+
+#sheetContent{
+
+flex:1;
+
+overflow:auto;
+
+padding:14px;
 
 }
 
@@ -1183,34 +1173,6 @@ Loading...
 <main>
 
 <!-- ===================================================== -->
-<!-- NOTICE BOARD -->
-<!-- ===================================================== -->
-
-<section id="noticePanel">
-
-<div
-    class="panel-title"
-    id="noticeHeader">
-
-    <span>
-        📢 Notice Board
-    </span>
-
-    <span id="noticeArrow">
-        ▼
-    </span>
-
-</div>
-
-<div id="noticeContent">
-
-No notice available.
-
-</div>
-
-</section>
-
-<!-- ===================================================== -->
 <!-- BILL -->
 <!-- ===================================================== -->
 
@@ -1480,6 +1442,44 @@ Loading...2
 </section>
 
 </main>
+
+<!-- ===================================== -->
+<!-- Bottom Sheet -->
+<!-- ===================================== -->
+
+<div id="bottomSheet" class="collapsed">
+
+    <div id="sheetHandle">
+
+        <span class="sheet-tab active"
+              data-tab="notice">
+            📢 Notice
+        </span>
+
+        <span class="sheet-tab"
+              data-tab="history">
+            🔔 Notifications
+        </span>
+
+    </div>
+
+    <div id="sheetContent">
+
+        <div id="sheetNotice">
+
+            No notice available.
+
+        </div>
+
+        <div
+            id="sheetHistory"
+            class="hidden">
+
+        </div>
+
+    </div>
+
+</div>
 
 </div>
 
@@ -1920,34 +1920,6 @@ await loadCustomer();
 
 showApp();
 
-document
-
-.getElementById(
-
-"noticePanel"
-
-)
-
-.classList.add(
-
-"collapsed"
-
-);
-
-document
-
-.getElementById(
-
-"historyPanel"
-
-)
-
-.classList.add(
-
-"collapsed"
-
-);    
-
 try{
 
 await registerDevice(
@@ -2302,8 +2274,8 @@ renderHistory();
 function renderNotice(){
 
 document.getElementById(
-"noticeContent"
-).textContent=
+"sheetNotice"
+).textContent =
 
 App.notice||
 
@@ -2495,10 +2467,10 @@ App.config.footerLine5
     
 function renderHistory(){
 
-const list=
+const list =
 
 document.getElementById(
-"historyList"
+"sheetHistory"
 );
 
 list.innerHTML="";
@@ -2732,57 +2704,89 @@ url;
 
 }
 
-document
-
-.getElementById(
-
-"noticeHeader"
-
-)
-
-.onclick = function(){
-
-const panel =
-
+const sheet =
 document.getElementById(
-
-"noticePanel"
-
+"bottomSheet"
 );
 
-panel.classList.toggle(
-
-"collapsed"
-
+const tabs =
+document.querySelectorAll(
+".sheet-tab"
 );
 
-};
+const notice =
+document.getElementById(
+"sheetNotice"
+);
+
+const history =
+document.getElementById(
+"sheetHistory"
+);
 
 document
 
 .getElementById(
-
-"historyHeader"
-
+"sheetHandle"
 )
 
-.onclick = function(){
+.onclick=function(){
 
-const panel =
-
-document.getElementById(
-
-"historyPanel"
-
-);
-
-panel.classList.toggle(
-
-"collapsed"
-
+sheet.classList.toggle(
+"open"
 );
 
 };
+
+tabs.forEach(function(tab){
+
+tab.onclick=function(e){
+
+e.stopPropagation();
+
+tabs.forEach(function(t){
+
+t.classList.remove(
+"active"
+);
+
+});
+
+tab.classList.add(
+"active"
+);
+
+if(
+
+tab.dataset.tab==="notice"
+
+){
+
+notice.classList.remove(
+"hidden"
+);
+
+history.classList.add(
+"hidden"
+);
+
+}
+
+else{
+
+history.classList.remove(
+"hidden"
+);
+
+notice.classList.add(
+"hidden"
+);
+
+}
+
+};
+
+});
 
 /* =====================================================
 PWA INSTALL
