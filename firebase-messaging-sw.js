@@ -1,5 +1,5 @@
 /* ==========================================================
- * FIREBASE MESSAGING SERVICE WORKER
+ * FIREBASE MESSAGING SERVICE WORKER *
  * Customer PWA
  * ==========================================================
  */
