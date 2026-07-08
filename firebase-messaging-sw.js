@@ -72,13 +72,8 @@ messaging.onBackgroundMessage(function (payload) {
 
         notification.body || "",
 
-      icon:
-
-        "/icons/icon-192.png",
-
-      badge:
-
-        "/icons/icon-192.png",
+      icon: "/SMC-CUSTOMER-PWA/icons/icon-192.png",
+      badge: "/SMC-CUSTOMER-PWA/icons/icon-192.png",
 
       tag:
 
@@ -96,9 +91,7 @@ messaging.onBackgroundMessage(function (payload) {
 
         {
 
-          url:
-
-            "/",
+          url: "/SMC-CUSTOMER-PWA/",
 
           ...data
 
