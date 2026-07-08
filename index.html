@@ -386,76 +386,6 @@ box-shadow:
 overflow:hidden;
 
 }
-
-/* ===========================
-RIGHT PANEL
-=========================== */
-
-#historyPanel{
-
-width:320px;
-
-background:var(--history);
-
-border-left:1px solid var(--border);
-
-display:flex;
-
-flex-direction:column;
-
-overflow:hidden;
-
-}
-
-#historyList{
-
-flex:1;
-
-overflow:auto;
-
-padding:12px;
-
-}
-
-#historyHeader{
-
-cursor:pointer;
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-user-select:none;
-
-}
-
-#historyArrow{
-
-font-size:18px;
-
-transition:.25s;
-
-}
-
-#historyPanel.collapsed #historyList{
-
-display:none;
-
-}
-
-#historyPanel.collapsed{
-
-height:48px !important;
-
-}
-
-#historyPanel.collapsed #historyArrow{
-
-transform:rotate(-90deg);
-
-}
     
 .history-item{
 
@@ -565,9 +495,17 @@ cursor:pointer;
 
 flex:1;
 
-text-align:center;
+height:100%;
 
-padding:14px;
+border:none;
+
+background:white;
+
+font-size:16px;
+
+font-weight:bold;
+
+cursor:pointer;
 
 }
 
@@ -581,9 +519,13 @@ color:var(--primary);
 
 flex:1;
 
-overflow:auto;
+overflow-y:auto;
 
-padding:14px;
+padding:12px;
+
+display:flex;
+
+flex-direction:column;
 
 }
 
@@ -1031,18 +973,6 @@ border-bottom:1px solid #ddd;
 
 }
 
-#historyPanel{
-
-width:100%;
-
-height:auto;
-
-border-left:none;
-
-border-top:1px solid #ddd;
-
-}
-
 .payment-box{
 
 flex-direction:row;
@@ -1419,28 +1349,6 @@ Loading...2
 <!-- NOTIFICATION HISTORY -->
 <!-- ===================================================== -->
 
-<section id="historyPanel">
-
-    <div
-        class="panel-title"
-        id="historyHeader">
-    
-        <span>
-            🔔 Notifications
-        </span>
-    
-        <span id="historyArrow">
-            ▼
-        </span>
-    
-    </div>
-
-    <div id="historyList">
-
-    </div>
-
-</section>
-
 </main>
 
 <!-- ===================================== -->
@@ -1451,15 +1359,23 @@ Loading...2
 
     <div id="sheetHandle">
 
-        <span class="sheet-tab active"
-              data-tab="notice">
+        <button
+            type="button"
+            class="sheet-tab active"
+            data-tab="notice">
+            
             📢 Notice
-        </span>
-
-        <span class="sheet-tab"
-              data-tab="history">
+            
+            </button>
+            
+            <button
+            type="button"
+            class="sheet-tab"
+            data-tab="history">
+            
             🔔 Notifications
-        </span>
+            
+            </button>
 
     </div>
 
@@ -2725,19 +2641,27 @@ document.getElementById(
 );
 
 document
-
 .getElementById(
 "sheetHandle"
 )
+.addEventListener(
+"click",
+function(e){
 
-.onclick=function(){
+if(
+e.target.classList.contains(
+"sheet-tab"
+)
+){
+return;
+}
 
 sheet.classList.toggle(
 "open"
 );
 
-};
-
+});
+    
 tabs.forEach(function(tab){
 
 tab.onclick=function(e){
