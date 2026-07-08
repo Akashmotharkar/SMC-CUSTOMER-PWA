@@ -1,42 +1,43 @@
 /* ==========================================================
    CUSTOMER PWA SERVICE WORKER
    ========================================================== */
-
 const CACHE_NAME = "customer-pwa-v1.0.1";
+
+const BASE = "/SMC-CUSTOMER-PWA";
 
 const ASSETS = [
 
-    "/",
+    BASE + "/",
 
-    "/index.html",
+    BASE + "/index.html",
 
-    "/manifest.json",
+    BASE + "/manifest.json",
 
-    "/api.js",
+    BASE + "/api.js",
 
-    "/js/firebase/firebase-config.js",
+    BASE + "/js/firebase/firebase-config.js",
 
-    "/js/firebase/firebase-app.js",
+    BASE + "/js/firebase/firebase-app.js",
 
-    "/js/firebase/firebase-messaging.js",
+    BASE + "/js/firebase/firebase-messaging.js",
 
-    "/firebase-messaging-sw.js",
+    BASE + "/firebase-messaging-sw.js",
 
-    "/icons/icon-72.png",
+    BASE + "/icons/icon-72.png",
 
-    "/icons/icon-96.png",
+    BASE + "/icons/icon-96.png",
 
-    "/icons/icon-128.png",
+    BASE + "/icons/icon-128.png",
 
-    "/icons/icon-144.png",
+    BASE + "/icons/icon-144.png",
 
-    "/icons/icon-152.png",
+    BASE + "/icons/icon-152.png",
 
-    "/icons/icon-192.png",
+    BASE + "/icons/icon-192.png",
 
-    "/icons/icon-384.png",
+    BASE + "/icons/icon-384.png",
 
-    "/icons/icon-512.png"
+    BASE + "/icons/icon-512.png"
 
 ];
 
@@ -236,11 +237,7 @@ self.addEventListener(
 
                     ) {
 
-                        return caches.match(
-
-                            "/index.html"
-
-                        );
+                        return caches.match(BASE + "/index.html");
 
                     }
 
