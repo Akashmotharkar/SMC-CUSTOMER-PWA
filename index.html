@@ -675,13 +675,15 @@ margin-top:2px;
 
 .bill-customer-id{
 
-margin-top:2px;
+margin:4px 0 6px;
 
-font-size:24px;
+font-size:26px;
+
+font-weight:bold;
 
 line-height:1;
 
-font-weight:bold;
+text-align:center;
 
 color:white;
 
@@ -1219,6 +1221,12 @@ No notice available.
 <div class="bill-title">
 
 Milk Collection
+
+</div>
+
+<div
+class="bill-customer-id"
+id="customerId">
 
 </div>
 
@@ -2314,13 +2322,10 @@ document.getElementById(
 ).textContent=
 b.name;
 
-document.querySelector(
-".bill-subtitle"
-).innerHTML =
-b.month +
-"<br><div class='bill-customer-id'>" +
-b.name +
-"</div>";
+document.getElementById(
+"customerId"
+).textContent =
+b.name;
 
 document.getElementById(
 "invoiceNumberHeader"
