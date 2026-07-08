@@ -117,7 +117,7 @@
     };
 
 
-    API.registerToken =
+    /*API.registerToken =
         function (
 
             mobile,
@@ -144,7 +144,19 @@
 
             );
 
-        };
+        };*/
+    API.registerToken = function (mobile, token) {
+
+    return request(
+        "GET",
+        {
+            action: "registerToken",
+            mobile: mobile,
+            token: token
+        }
+    );
+
+};
 
 
     /* ======================================================
