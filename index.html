@@ -491,6 +491,28 @@ cursor:pointer;
 
 }
 
+#closeSheet{
+
+position:absolute;
+
+right:12px;
+
+top:10px;
+
+width:34px;
+
+height:34px;
+
+border:none;
+
+border-radius:50%;
+
+background:#eee;
+
+font-size:18px;
+
+}
+
 .sheet-tab{
 
 flex:1;
@@ -517,15 +539,19 @@ color:var(--primary);
 
 #sheetContent{
 
+display:none;
+
 flex:1;
 
 overflow-y:auto;
 
 padding:12px;
 
-display:flex;
+}
 
-flex-direction:column;
+#bottomSheet.open #sheetContent{
+
+display:block;
 
 }
 
@@ -1358,6 +1384,13 @@ Loading...2
 <div id="bottomSheet" class="collapsed">
 
     <div id="sheetHandle">
+        
+        <button
+        id="closeSheet">
+        
+        ▼
+        
+        </button>
 
         <button
             type="button"
@@ -2639,78 +2672,42 @@ const history =
 document.getElementById(
 "sheetHistory"
 );
-
-document
-.getElementById(
-"sheetHandle"
-)
-.addEventListener(
-"click",
-function(e){
-
-if(
-e.target.classList.contains(
-"sheet-tab"
-)
-){
-return;
-}
-
-sheet.classList.toggle(
-"open"
-);
-
-});
     
 tabs.forEach(function(tab){
 
-tab.onclick=function(e){
+tab.onclick = function(e){
 
-e.stopPropagation();
+    e.stopPropagation();
 
-tabs.forEach(function(t){
+    tabs.forEach(function(t){
+        t.classList.remove("active");
+    });
 
-t.classList.remove(
-"active"
-);
+    tab.classList.add("active");
 
-});
+    if(tab.dataset.tab==="notice"){
 
-tab.classList.add(
-"active"
-);
+        notice.classList.remove("hidden");
+        history.classList.add("hidden");
 
-if(
+    }else{
 
-tab.dataset.tab==="notice"
+        history.classList.remove("hidden");
+        notice.classList.add("hidden");
 
-){
+    }
 
-notice.classList.remove(
-"hidden"
-);
-
-history.classList.add(
-"hidden"
-);
-
-}
-
-else{
-
-history.classList.remove(
-"hidden"
-);
-
-notice.classList.add(
-"hidden"
-);
-
-}
+    sheet.classList.add("open");
 
 };
 
-});
+document
+.getElementById("closeSheet")
+.onclick=function(){
+
+sheet.classList.remove("open");
+
+};
 
 /* =====================================================
 PWA INSTALL
