@@ -495,6 +495,8 @@ display:flex;
 
 flex-direction:column;
 
+overflow:hidden;
+
 }
 
 #historyList{
@@ -507,6 +509,46 @@ padding:12px;
 
 }
 
+#historyHeader{
+
+cursor:pointer;
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+user-select:none;
+
+}
+
+#historyArrow{
+
+font-size:18px;
+
+transition:.25s;
+
+}
+
+#historyPanel.collapsed #historyList{
+
+display:none;
+
+}
+
+#historyPanel.collapsed{
+
+height:48px !important;
+
+}
+
+#historyPanel.collapsed #historyArrow{
+
+transform:rotate(-90deg);
+
+}
+    
 .history-item{
 
 background:white;
@@ -979,7 +1021,7 @@ border-bottom:1px solid #ddd;
 
 width:100%;
 
-height:180px;
+height:auto;
 
 border-left:none;
 
@@ -1417,10 +1459,18 @@ Loading...2
 
 <section id="historyPanel">
 
-    <div class="panel-title">
-
-        Notifications
-
+    <div
+        class="panel-title"
+        id="historyHeader">
+    
+        <span>
+            🔔 Notifications
+        </span>
+    
+        <span id="historyArrow">
+            ▼
+        </span>
+    
     </div>
 
     <div id="historyList">
@@ -1883,6 +1933,20 @@ document
 "collapsed"
 
 );
+
+document
+
+.getElementById(
+
+"historyPanel"
+
+)
+
+.classList.add(
+
+"collapsed"
+
+);    
 
 try{
 
@@ -2582,6 +2646,32 @@ const panel =
 document.getElementById(
 
 "noticePanel"
+
+);
+
+panel.classList.toggle(
+
+"collapsed"
+
+);
+
+};
+
+document
+
+.getElementById(
+
+"historyHeader"
+
+)
+
+.onclick = function(){
+
+const panel =
+
+document.getElementById(
+
+"historyPanel"
 
 );
 
