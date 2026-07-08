@@ -361,6 +361,8 @@ display:flex;
 
 flex-direction:column;
 
+overflow:hidden;
+
 }
 
 .panel-title{
@@ -394,6 +396,46 @@ white-space:pre-wrap;
 line-height:1.6;
 
 font-size:15px;
+
+}
+
+#noticeHeader{
+
+cursor:pointer;
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+user-select:none;
+
+}
+
+#noticeArrow{
+
+font-size:18px;
+
+transition:.25s;
+
+}
+
+#noticePanel.collapsed #noticeContent{
+
+display:none;
+
+}
+
+#noticePanel.collapsed{
+
+height:48px !important;
+
+}
+
+#noticePanel.collapsed #noticeArrow{
+
+transform:rotate(-90deg);
 
 }
 
@@ -925,7 +967,7 @@ flex-direction:column;
 
 width:100%;
 
-height:140px;
+height:auto;
 
 border-right:none;
 
@@ -1078,9 +1120,17 @@ Loading...
 
 <section id="noticePanel">
 
-<div class="panel-title">
+<div
+    class="panel-title"
+    id="noticeHeader">
 
-Notice Board
+    <span>
+        📢 Notice Board
+    </span>
+
+    <span id="noticeArrow">
+        ▼
+    </span>
 
 </div>
 
@@ -1820,6 +1870,20 @@ await loadCustomer();
 
 showApp();
 
+document
+
+.getElementById(
+
+"noticePanel"
+
+)
+
+.classList.add(
+
+"collapsed"
+
+);
+
 try{
 
 await registerDevice(
@@ -2502,6 +2566,32 @@ text||""
 );
 
 }
+
+document
+
+.getElementById(
+
+"noticeHeader"
+
+)
+
+.onclick = function(){
+
+const panel =
+
+document.getElementById(
+
+"noticePanel"
+
+);
+
+panel.classList.toggle(
+
+"collapsed"
+
+);
+
+};
 
 /* =====================================================
 PWA INSTALL
