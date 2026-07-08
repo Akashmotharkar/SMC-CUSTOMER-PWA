@@ -467,7 +467,7 @@ flex-direction:column;
 
 #bottomSheet.open{
 
-height:60vh;
+height:50vh;
 
 }
 
@@ -488,28 +488,6 @@ border-bottom:1px solid #eee;
 background:#fafafa;
 
 cursor:pointer;
-
-}
-
-#closeSheet{
-
-position:absolute;
-
-right:12px;
-
-top:10px;
-
-width:34px;
-
-height:34px;
-
-border:none;
-
-border-radius:50%;
-
-background:#eee;
-
-font-size:18px;
 
 }
 
@@ -1385,13 +1363,6 @@ Loading...2
 
     <div id="sheetHandle">
         
-        <button
-        id="closeSheet">
-        
-        ▼
-        
-        </button>
-
         <button
             type="button"
             class="sheet-tab active"
@@ -2658,6 +2629,13 @@ document.getElementById(
 "bottomSheet"
 );
 
+sheet.addEventListener(
+    "click",
+    function(e){
+        e.stopPropagation();
+    }
+);
+
 const tabs =
 document.querySelectorAll(
 ".sheet-tab"
@@ -2703,13 +2681,21 @@ tab.onclick = function(e){
 
 });
 
-document
-.getElementById("closeSheet")
-.onclick=function(){
+document.addEventListener("click", function(e){
 
-sheet.classList.remove("open");
+    if(
+        !sheet.classList.contains("open")
+    ){
+        return;
+    }
 
-};
+    if(
+        !sheet.contains(e.target)
+    ){
+        sheet.classList.remove("open");
+    }
+
+});
 
 /* =====================================================
 PWA INSTALL
