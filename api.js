@@ -145,6 +145,7 @@
             );
 
         };*/
+    
     API.registerToken = function (mobile, token) {
 
     return request(
