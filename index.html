@@ -23,6 +23,8 @@ href="manifest.json">
 rel="icon"
 href="icons/icon-192.png">
 
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+
 <style>
 
 :root{
@@ -2291,6 +2293,8 @@ renderNotice();
 
 renderConfig();
 
+generateUPIQR();
+
 renderHistory();
 
 }
@@ -2607,6 +2611,128 @@ text||""
 />/g,
 
 "&gt;"
+
+);
+
+}
+
+/* =====================================================
+GENERATE UPI QR
+===================================================== */
+
+function generateUPIQR(){
+
+if(
+
+!App.bill ||
+
+!App.config
+
+){
+
+return;
+
+}
+
+const amount =
+
+Number(
+
+App.bill.totalAmount || 0
+
+).toFixed(2);
+
+let upi =
+
+"upi://pay?";
+
+upi +=
+
+"pa=" +
+
+encodeURIComponent(
+
+App.config.upiId
+
+);
+
+upi +=
+
+"&pn=" +
+
+encodeURIComponent(
+
+App.config.upiName
+
+);
+
+upi +=
+
+"&tn=" +
+
+encodeURIComponent(
+
+App.bill.invoiceNumber
+
+);
+
+if(
+
+App.config.lockUpiAmount
+
+){
+
+upi +=
+
+"&am=" +
+
+amount;
+
+}
+
+upi +=
+
+"&cu=INR";
+
+QRCode.toDataURL(
+
+upi,
+
+{
+
+width:300,
+
+margin:1
+
+},
+
+function(
+
+err,
+
+url
+
+){
+
+if(err){
+
+console.error(err);
+
+return;
+
+}
+
+document
+
+.getElementById(
+
+"upiQr"
+
+).src =
+
+url;
+
+}
 
 );
 
