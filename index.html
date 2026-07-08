@@ -497,7 +497,7 @@ background:var(--primary);
 
 color:white;
 
-padding:16px;
+padding:10px 12px;
 
 text-align:center;
 
@@ -505,25 +505,41 @@ text-align:center;
 
 .bill-title{
 
-font-size:24px;
+font-size:18px;
 
 font-weight:bold;
+
+line-height:1.2;
 
 }
 
 .bill-subtitle{
 
-margin-top:6px;
+margin-top:2px;
 
-font-size:14px;
+font-size:13px;
 
 opacity:.9;
+
+line-height:1.3;
+
+}
+
+.bill-customer-id{
+
+margin-top:4px;
+
+font-size:30px;
+
+font-weight:bold;
+
+color:white;
 
 }
 
 .bill-section{
 
-padding:16px;
+padding:8px 12px;
 
 border-bottom:1px solid #eee;
 
@@ -983,9 +999,7 @@ Loading...
 
 <header>
 
-<div class="header-title">
-Milk Bill
-</div>
+<div class="header-title"></div>
 
 <div
 class="header-user"
@@ -1048,7 +1062,7 @@ Current Month
 </div>
 
 <div
-class="customer-name"
+class="customer-name hidden"
 id="customerName">
 
 Customer
@@ -2142,6 +2156,14 @@ document.getElementById(
 "customerName"
 ).textContent=
 b.name;
+
+document.querySelector(
+".bill-subtitle"
+).innerHTML =
+b.month +
+"<br><div class='bill-customer-id'>" +
+b.name +
+"</div>";
 
 document.getElementById(
 "invoiceNumber"
