@@ -1420,6 +1420,7 @@ listenForeground
 from "./js/firebase/firebase-messaging.js";
 
 window.registerDevice = registerDevice;
+window.listenForeground = listenForeground;
 
 </script>
 
@@ -1857,7 +1858,7 @@ console.error(e);
 }
     try {
 
-    await listenForeground();
+    await window.listenForeground();
 
 }
 
