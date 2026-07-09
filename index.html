@@ -2888,6 +2888,30 @@ alert(
 
 window.addEventListener(
 
+    "notificationReceived",
+
+    async function () {
+
+        try {
+
+            await loadHistory();
+
+            renderHistory();
+
+        }
+
+        catch (e) {
+
+            console.error(e);
+
+        }
+
+    }
+
+);
+    
+window.addEventListener(
+
 "online",
 
 async function(){
