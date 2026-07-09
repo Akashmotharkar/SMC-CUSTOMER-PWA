@@ -50,6 +50,8 @@ const messaging =
  */
 
 messaging.onBackgroundMessage(function (payload) {
+  
+  console.log("BACKGROUND MESSAGE RECEIVED");
 
   console.log(
     "[firebase-messaging-sw] Background Message",
