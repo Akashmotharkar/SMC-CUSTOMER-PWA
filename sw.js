@@ -328,7 +328,7 @@ messaging.onBackgroundMessage(function (payload) {
   
   console.log("BACKGROUND MESSAGE RECEIVED");
   console.log("[firebase-messaging-sw] Background Message",payload);
-
+   /*
   const notification = {
        title:
            payload.data?.title ||
@@ -382,6 +382,7 @@ messaging.onBackgroundMessage(function (payload) {
     }
 
   );
+  */
 
 });
 
