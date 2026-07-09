@@ -275,6 +275,22 @@ export async function listenForeground() {
             }
         );
 
+        window.dispatchEvent(
+
+            new CustomEvent(
+        
+                "notificationReceived",
+        
+                {
+        
+                    detail: payload
+        
+                }
+        
+            )
+        
+        );
+
     }
 
 );
