@@ -54,8 +54,10 @@ messaging.onBackgroundMessage(function (payload) {
   console.log("BACKGROUND MESSAGE RECEIVED");
   console.log("[firebase-messaging-sw] Background Message",payload);
 
-  const notification =
-    payload.notification || {};
+  const notification = {
+    title: payload.data?.title || "Milk Collection",
+    body: payload.data?.body || ""
+  };
 
   const data =
     payload.data || {};
