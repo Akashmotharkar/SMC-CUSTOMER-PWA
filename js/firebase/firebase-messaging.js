@@ -220,20 +220,31 @@ return true;
 
 export async function listenForeground() {
 
+    console.log("listenForeground() called");
+
     const messaging =
         await initializeMessaging();
-
+    
+    console.log("Messaging instance:", messaging);
+    
     if (!messaging) {
-
+    
+        console.log("Messaging not supported.");
+    
         return;
-
+    
     }
+    
+    console.log("Registering onMessage listener...");
 
     onMessage(
 
     messaging,
 
     payload => {
+        console.log("onMessage fired");
+
+        console.log(payload);
 
         console.log(
             "Foreground message",
