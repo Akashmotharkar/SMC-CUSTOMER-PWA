@@ -241,7 +241,7 @@ export async function listenForeground() {
 
     messaging,
 
-    payload => {
+    async payload => {
         console.log("onMessage fired");
 
         console.log(payload);
@@ -261,7 +261,10 @@ export async function listenForeground() {
             payload.notification?.body ||
             "";
 
-        new Notification(
+        const registration =
+            await navigator.serviceWorker.ready;
+        
+        registration.showNotification(
             title,
             {
                 body: body,
