@@ -341,7 +341,7 @@ const messaging =
    
      const data = payload.data || {};
    
-     self.registration.showNotification(
+     /*self.registration.showNotification(
        notification.title,
        {
          body: notification.body,
@@ -355,7 +355,7 @@ const messaging =
            ...data
          }
        }
-     );
+     );*/
    
    });
 
