@@ -231,40 +231,38 @@ export async function listenForeground() {
 
     onMessage(
 
-        messaging,
+    messaging,
 
-        payload => {
+    payload => {
 
-            if (!payload.notification) {
+        console.log(
+            "Foreground message",
+            payload
+        );
 
-                return;
+        const title =
+            payload.data?.title ||
+            payload.notification?.title ||
+            "Milk Collection";
 
+        const body =
+            payload.data?.body ||
+            payload.notification?.body ||
+            "";
+
+        new Notification(
+            title,
+            {
+                body: body,
+                icon:
+                    "/SMC-CUSTOMER-PWA/icons/icon-192.png",
+                badge:
+                    "/SMC-CUSTOMER-PWA/icons/icon-192.png"
             }
+        );
 
-            new Notification(
+    }
 
-                payload.notification.title,
-
-                {
-
-                    body:
-
-                        payload.notification.body,
-
-                    icon:
-
-                        "/icons/icon-192.png",
-
-                    badge:
-
-                        "/icons/badge.png"
-
-                }
-
-            );
-
-        }
-
-    );
+);
 
 }
