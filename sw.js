@@ -324,40 +324,40 @@ const messaging =
  * ==========================================================
  */
 
-messaging.onBackgroundMessage(function (payload) {
-
-  console.log("BACKGROUND MESSAGE RECEIVED");
-  console.log(payload);
-
-  const notification = {
-    title:
-      payload.data?.title ||
-      "Milk Collection",
-
-    body:
-      payload.data?.body ||
-      ""
-  };
-
-  const data = payload.data || {};
-
-  self.registration.showNotification(
-    notification.title,
-    {
-      body: notification.body,
-      icon: "/SMC-CUSTOMER-PWA/icons/icon-192.png",
-      badge: "/SMC-CUSTOMER-PWA/icons/icon-192.png",
-      tag: data.type || "milk",
-      renotify: true,
-      requireInteraction: false,
-      data: {
-        url: "/SMC-CUSTOMER-PWA/",
-        ...data
-      }
-    }
-  );
-
-});
+   messaging.onBackgroundMessage(function (payload) {
+   
+     console.log("BACKGROUND MESSAGE RECEIVED");
+     console.log(payload);
+   
+     const notification = {
+       title:
+         payload.data?.title ||
+         "Milk Collection",
+   
+       body:
+         payload.data?.body ||
+         ""
+     };
+   
+     const data = payload.data || {};
+   
+     self.registration.showNotification(
+       notification.title,
+       {
+         body: notification.body,
+         icon: "/SMC-CUSTOMER-PWA/icons/icon-192.png",
+         badge: "/SMC-CUSTOMER-PWA/icons/icon-192.png",
+         tag: data.type || "milk",
+         renotify: true,
+         requireInteraction: false,
+         data: {
+           url: "/SMC-CUSTOMER-PWA/",
+           ...data
+         }
+       }
+     );
+   
+   });
 
 /* ==========================================================
  * NOTIFICATION CLICK
