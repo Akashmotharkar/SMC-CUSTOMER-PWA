@@ -325,67 +325,39 @@ const messaging =
  */
 
 messaging.onBackgroundMessage(function (payload) {
-  
-  console.log("BACKGROUND MESSAGE RECEIVED");
-  console.log("[firebase-messaging-sw] Background Message",payload);
-   /*
-  const notification = {
-       title:
-           payload.data?.title ||
-           payload.notification?.title ||
-           "Milk Collection",
-   
-       body:
-           payload.data?.body ||
-           payload.notification?.body ||
-           ""
-   };
 
-  const data =
-    payload.data || {};
+  console.log("BACKGROUND MESSAGE RECEIVED");
+  console.log(payload);
+
+  const notification = {
+    title:
+      payload.data?.title ||
+      "Milk Collection",
+
+    body:
+      payload.data?.body ||
+      ""
+  };
+
+  const data = payload.data || {};
 
   self.registration.showNotification(
-
-    notification.title || "Milk Collection",
-
+    notification.title,
     {
-
-      body:
-
-        notification.body || "",
-
+      body: notification.body,
       icon: "/SMC-CUSTOMER-PWA/icons/icon-192.png",
       badge: "/SMC-CUSTOMER-PWA/icons/icon-192.png",
-
-      tag:
-
-        data.type || "milk",
-
-      renotify:
-
-        true,
-
-      requireInteraction:
-
-        false,
-
-      data:
-
-        {
-
-          url: "/SMC-CUSTOMER-PWA/",
-
-          ...data
-
-        }
-
+      tag: data.type || "milk",
+      renotify: true,
+      requireInteraction: false,
+      data: {
+        url: "/SMC-CUSTOMER-PWA/",
+        ...data
+      }
     }
-
   );
-  */
 
 });
-
 
 /* ==========================================================
  * NOTIFICATION CLICK
