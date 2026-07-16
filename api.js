@@ -10,6 +10,8 @@
 
     const API = {};
 
+    API.route = localStorage.getItem("route") || "";
+
     /* ======================================================
      * CONFIGURATION
      * ====================================================== */
@@ -97,24 +99,29 @@
      * AUTH
      * ====================================================== */
 
-    API.login =
-    function (mobile) {
+    API.login = async function (mobile) {
 
-        return request(
+            const result =
+                await request(
+                    "GET",
+                    {
+                        action: "login",
+                        mobile: mobile
+                    }
+                );
+        
+            API.route = result.route || "";
+        
+            localStorage.setItem(
+                "route",
+                API.route
+            );
+        
+            return result;
+        
+        };
 
-            "GET",
-
-            {
-
-                action: "login",
-
-                mobile: mobile
-
-            }
-
-        );
-
-    };
+    
  
     API.registerToken = function (mobile, token) {
 
@@ -122,6 +129,7 @@
         "GET",
         {
             action: "registerToken",
+            route: API.route,
             mobile: mobile,
             token: token
         }
@@ -150,15 +158,11 @@
                 "GET",
 
                 {
-
                     action: "bill",
-
+                    route: API.route,
                     mobile: mobile,
-
                     month: month,
-
                     year: year
-
                 }
 
             );
@@ -204,11 +208,9 @@
                 "GET",
 
                 {
-
                     action: "history",
-
+                    route: API.route,
                     mobile: mobile
-
                 }
 
             );
