@@ -172,23 +172,18 @@
     /* ======================================================
      * NOTICE
      * ====================================================== */
-
-    API.getNotice =
-        function () {
-
-            return request(
-
-                "GET",
-
-                {
-
-                    action: "notice"
-
-                }
-
-            );
-
-        };
+    
+    API.getNotice = function () {
+    
+        return request(
+            "GET",
+            {
+                action: "notice",
+                route: API.route
+            }
+        );
+    
+    };
 
 
     /* ======================================================
@@ -220,23 +215,18 @@
     /* ======================================================
      * CONFIG
      * ====================================================== */
-
-    API.getConfig =
-        function () {
-
-            return request(
-
-                "GET",
-
-                {
-
-                    action: "config"
-
-                }
-
-            );
-
-        };
+    
+    API.getConfig = function () {
+    
+        return request(
+            "GET",
+            {
+                action: "config",
+                route: API.route
+            }
+        );
+    
+    };
 
 
     window.API = API;
