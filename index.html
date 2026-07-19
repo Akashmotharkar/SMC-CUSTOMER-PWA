@@ -2181,6 +2181,97 @@ e.message
 
 };
 
+
+document.getElementById("registerSubmit").onclick = async function () {
+
+    const mobile =
+        document.getElementById("registerMobile").value.trim();
+
+    const invoiceNo =
+        document.getElementById("registerInvoice").value.trim();
+
+    const invoiceAmount =
+        document.getElementById("registerAmount").value.trim();
+
+    if (!/^\d{10}$/.test(mobile)) {
+
+        UI.registerStatus.textContent =
+            "Enter valid mobile number.";
+
+        return;
+
+    }
+
+    if (!invoiceNo) {
+
+        UI.registerStatus.textContent =
+            "Enter invoice number.";
+
+        return;
+
+    }
+
+    if (!invoiceAmount) {
+
+        UI.registerStatus.textContent =
+            "Enter invoice amount.";
+
+        return;
+
+    }
+
+    UI.registerStatus.textContent = "";
+
+    showLoading("Registering...");
+
+    try {
+
+        const result =
+            await API.registerMobileNumber(
+
+                mobile,
+
+                invoiceNo,
+
+                Number(invoiceAmount)
+
+            );
+
+        hideLoading();
+
+        UI.registerStatus.textContent =
+            result.message;
+
+        if (result.success) {
+
+            document.getElementById("registerMobile").value = "";
+            document.getElementById("registerInvoice").value = "";
+            document.getElementById("registerAmount").value = "";
+
+            setTimeout(function () {
+
+                hideRegister();
+
+                UI.registerStatus.textContent = "";
+
+            }, 1000);
+
+        }
+
+    }
+    catch (e) {
+
+        hideLoading();
+
+        UI.registerStatus.textContent =
+            e.message;
+
+    }
+
+};
+
+    
+
 async function loadCustomer(showLoader = true){
 
     if(showLoader){
