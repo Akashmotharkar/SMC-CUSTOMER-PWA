@@ -95,6 +95,36 @@
 
 
     /* ======================================================
+     * Register Mobile Number
+     * ====================================================== */
+
+
+    async registerMobileNumber(
+        mobile,
+        invoiceNo,
+        invoiceAmount
+    ){
+    
+        return this.request(
+    
+            "registerMobileNumber",
+    
+            {
+    
+                mobile,
+    
+                invoiceNo,
+    
+                invoiceAmount
+    
+            }
+    
+        );
+    
+    }
+
+
+    /* ======================================================
      * AUTH
      * ====================================================== */
 
