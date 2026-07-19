@@ -139,37 +139,20 @@
     /* ======================================================
      * REGISTER MOBILE
      * ====================================================== */
-    
     API.registerMobileNumber = function (
-    
-        mobile,
-    
-        invoiceNo,
-    
-        invoiceAmount
-    
+      mobile,
+      invoiceNo,
+      invoiceAmount
     ) {
-    
-        return request(
-    
-            "POST",
-    
-            null,
-    
-            {
-    
-                action: "registerMobileNumber",
-    
-                mobile: mobile,
-    
-                invoiceNo: invoiceNo,
-    
-                invoiceAmount: invoiceAmount
-    
-            }
-    
-        );
-    
+      return request(
+        "GET",
+        {
+          action: "registerMobileNumber",
+          mobile: mobile,
+          invoiceNo: invoiceNo,
+          invoiceAmount: invoiceAmount
+        }
+      );
     };
 
 
