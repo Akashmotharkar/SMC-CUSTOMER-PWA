@@ -1079,7 +1079,21 @@ Loading...
         <button id="loginButton">
             Login
         </button>
-
+        
+        <button
+            id="registerButton"
+            style="
+                margin-top:-8px;
+                height:48px;
+                border:none;
+                background:#eeeeee;
+                color:#333;
+                font-size:16px;
+                border-radius:10px;
+            ">
+            Register Mobile Number
+        </button>
+        
         <div
             id="loginStatus"
             class="login-status">
@@ -1092,6 +1106,78 @@ Loading...
 <!-- ===================================================== -->
 <!-- APP -->
 <!-- ===================================================== -->
+
+<!-- ===================================================== -->
+<!-- REGISTER -->
+<!-- ===================================================== -->
+
+<div
+    id="registerScreen"
+    class="hidden">
+
+    <div class="login-card">
+
+        <div class="login-title">
+            Register Mobile
+        </div>
+
+        <div class="login-subtitle">
+            Verify using previous month's invoice.
+        </div>
+
+        <div class="mobile-box">
+
+            <div class="country">
+                +91
+            </div>
+
+            <input
+                id="registerMobile"
+                type="tel"
+                maxlength="10"
+                inputmode="numeric"
+                placeholder="Mobile Number">
+
+        </div>
+
+        <input
+            id="registerInvoice"
+            type="text"
+            placeholder="Invoice Number"
+            style="height:52px;padding:12px;font-size:16px;">
+
+        <input
+            id="registerAmount"
+            type="number"
+            placeholder="Invoice Amount"
+            style="height:52px;padding:12px;font-size:16px;">
+
+        <button id="registerSubmit">
+            Register
+        </button>
+
+        <button
+            id="registerBack"
+            style="
+                background:#eeeeee;
+                color:#333;
+                height:48px;
+                border:none;
+                border-radius:10px;
+            ">
+            Back
+        </button>
+
+        <div
+            id="registerStatus"
+            class="login-status">
+        </div>
+
+    </div>
+
+</div>
+
+    
 
 <div
     id="app"
@@ -1487,6 +1573,21 @@ document.getElementById(
 loginStatus:
 document.getElementById(
 "loginStatus"
+),
+
+registerButton:
+document.getElementById(
+"registerButton"
+),
+
+registerScreen:
+document.getElementById(
+"registerScreen"
+),
+
+registerStatus:
+document.getElementById(
+"registerStatus"
 )
 
 };
@@ -1595,6 +1696,32 @@ UI.loginScreen.classList.remove(
 );
 
 }
+
+function showRegister(){
+
+    UI.loginScreen.classList.add(
+        "hidden"
+    );
+
+    UI.registerScreen.classList.remove(
+        "hidden"
+    );
+
+}
+    
+
+function hideRegister(){
+
+    UI.registerScreen.classList.add(
+        "hidden"
+    );
+
+    UI.loginScreen.classList.remove(
+        "hidden"
+    );
+
+}
+
 
 function showApp(){
 
@@ -1801,6 +1928,24 @@ today
 );
 
 }
+
+};
+
+
+
+UI.registerButton.onclick =
+function(){
+
+    showRegister();
+
+};
+
+document.getElementById(
+"registerBack"
+).onclick =
+function(){
+
+    hideRegister();
 
 };
 
