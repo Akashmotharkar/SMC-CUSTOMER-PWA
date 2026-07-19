@@ -2141,6 +2141,54 @@ document
     }
 );
 
+
+/* ==========================================
+REGISTER SCREEN KEYBOARD NAVIGATION
+========================================== */
+
+document
+.getElementById("registerMobile")
+.onkeydown = function(e){
+
+    if(e.key==="Enter"){
+
+        document
+        .getElementById("registerInvoice")
+        .focus();
+
+    }
+
+};
+
+document
+.getElementById("registerInvoice")
+.onkeydown = function(e){
+
+    if(e.key==="Enter"){
+
+        document
+        .getElementById("registerAmount")
+        .focus();
+
+    }
+
+};
+
+document
+.getElementById("registerAmount")
+.onkeydown = function(e){
+
+    if(e.key==="Enter"){
+
+        document
+        .getElementById("registerSubmit")
+        .click();
+
+    }
+
+};
+    
+
 UI.mobile.addEventListener(
 
 "keydown",
