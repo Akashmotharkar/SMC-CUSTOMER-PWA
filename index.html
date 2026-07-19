@@ -2129,6 +2129,18 @@ this.value=this.value
 
 );
 
+document
+.getElementById("registerInvoice")
+.addEventListener(
+    "input",
+    function(){
+
+        this.value =
+            this.value.toUpperCase();
+
+    }
+);
+
 UI.mobile.addEventListener(
 
 "keydown",
