@@ -93,37 +93,6 @@
 
     }
 
-
-    /* ======================================================
-     * Register Mobile Number
-     * ====================================================== */
-
-
-    async registerMobileNumber(
-        mobile,
-        invoiceNo,
-        invoiceAmount
-    ){
-    
-        return this.request(
-    
-            "registerMobileNumber",
-    
-            {
-    
-                mobile,
-    
-                invoiceNo,
-    
-                invoiceAmount
-    
-            }
-    
-        );
-    
-    }
-
-
     /* ======================================================
      * AUTH
      * ====================================================== */
@@ -140,31 +109,68 @@
                 );
         
             API.route = result.route || "";
-        
-            localStorage.setItem(
-                "route",
-                API.route
-            );
-        
-            return result;
-        
-        };
-
+            
+                localStorage.setItem(
+                    "route",
+                    API.route
+                );
+            
+                return result;
+            
+            };
     
- 
-    API.registerToken = function (mobile, token) {
+        
+     
+        API.registerToken = function (mobile, token) {
+    
+        return request(
+            "GET",
+            {
+                action: "registerToken",
+                route: API.route,
+                mobile: mobile,
+                token: token
+            }
+        );
+    
+    };
 
-    return request(
-        "GET",
-        {
-            action: "registerToken",
-            route: API.route,
-            mobile: mobile,
-            token: token
-        }
-    );
 
-};
+    /* ======================================================
+     * REGISTER MOBILE
+     * ====================================================== */
+    
+    API.registerMobileNumber = function (
+    
+        mobile,
+    
+        invoiceNo,
+    
+        invoiceAmount
+    
+    ) {
+    
+        return request(
+    
+            "POST",
+    
+            null,
+    
+            {
+    
+                action: "registerMobileNumber",
+    
+                mobile: mobile,
+    
+                invoiceNo: invoiceNo,
+    
+                invoiceAmount: invoiceAmount
+    
+            }
+    
+        );
+    
+    };
 
 
     /* ======================================================
