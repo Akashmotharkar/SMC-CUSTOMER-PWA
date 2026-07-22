@@ -2912,28 +2912,26 @@ GENERATE UPI QR
 
 function generateUPIQR(){
 
-    alert(
-        JSON.stringify(App.config, null, 2)
-    );
-
-    if(!App.bill || !App.config){
-        alert("Bill or Config is missing");
+    if(!App.bill){
+        alert("App.bill is NULL");
         return;
     }
 
-    const amount =
-        Number(App.bill.totalAmount || 0).toFixed(2);
-
-    let upi = "upi://pay?";
-    upi += "pa=" + encodeURIComponent(App.config.upiId);
-    upi += "&pn=" + encodeURIComponent(App.config.upiName);
-    upi += "&tn=" + encodeURIComponent(App.bill.invoiceNumber);
-
-    if(App.config.lockUpiAmount){
-        upi += "&am=" + amount;
+    if(!App.config){
+        alert("App.config is NULL");
+        return;
     }
 
-    upi += "&cu=INR";
+    alert(
+        "UPI ID: " + App.config.upiId +
+        "\nUPI Name: " + App.config.upiName
+    );
+
+    let upi =
+        "upi://pay?pa=" + encodeURIComponent(App.config.upiId) +
+        "&pn=" + encodeURIComponent(App.config.upiName) +
+        "&tn=" + encodeURIComponent(App.bill.invoiceNumber) +
+        "&cu=INR";
 
     alert(upi);
 
@@ -2943,7 +2941,7 @@ function generateUPIQR(){
         function(err, url){
 
             if(err){
-                alert("QR Error: " + err);
+                alert("QR Error:\n" + err);
                 return;
             }
 
@@ -2954,7 +2952,6 @@ function generateUPIQR(){
     );
 
 }
-
 
 
     
