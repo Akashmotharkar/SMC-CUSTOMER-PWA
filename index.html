@@ -2912,121 +2912,52 @@ GENERATE UPI QR
 
 function generateUPIQR(){
 
-if(
+    alert(
+        JSON.stringify(App.config, null, 2)
+    );
 
-!App.bill ||
+    if(!App.bill || !App.config){
+        alert("Bill or Config is missing");
+        return;
+    }
 
-!App.config
+    const amount =
+        Number(App.bill.totalAmount || 0).toFixed(2);
 
-){
+    let upi = "upi://pay?";
+    upi += "pa=" + encodeURIComponent(App.config.upiId);
+    upi += "&pn=" + encodeURIComponent(App.config.upiName);
+    upi += "&tn=" + encodeURIComponent(App.bill.invoiceNumber);
 
-return;
+    if(App.config.lockUpiAmount){
+        upi += "&am=" + amount;
+    }
 
-}
+    upi += "&cu=INR";
 
-const amount =
+    alert(upi);
 
-Number(
+    QRCode.toDataURL(
+        upi,
+        { width:300, margin:1 },
+        function(err, url){
 
-App.bill.totalAmount || 0
+            if(err){
+                alert("QR Error: " + err);
+                return;
+            }
 
-).toFixed(2);
+            alert("QR Generated");
 
-let upi =
-
-"upi://pay?";
-
-upi +=
-
-"pa=" +
-
-encodeURIComponent(
-
-App.config.upiId
-
-);
-
-upi +=
-
-"&pn=" +
-
-encodeURIComponent(
-
-App.config.upiName
-
-);
-
-upi +=
-
-"&tn=" +
-
-encodeURIComponent(
-
-App.bill.invoiceNumber
-
-);
-
-if(
-
-App.config.lockUpiAmount
-
-){
-
-upi +=
-
-"&am=" +
-
-amount;
+            document.getElementById("upiQr").src = url;
+        }
+    );
 
 }
 
-upi +=
 
-"&cu=INR";
 
-QRCode.toDataURL(
-
-upi,
-
-{
-
-width:300,
-
-margin:1
-
-},
-
-function(
-
-err,
-
-url
-
-){
-
-if(err){
-
-console.error(err);
-
-return;
-
-}
-
-document
-
-.getElementById(
-
-"upiQr"
-
-).src =
-
-url;
-
-}
-
-);
-
-}
+    
 
 const sheet =
 document.getElementById(
