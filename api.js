@@ -234,14 +234,13 @@
     /* ======================================================
      * CONFIG
      * ====================================================== */
-    
-    API.getConfig = function () {
-    
+    API.getConfig = function (mobile) {
+
         return request(
             "GET",
             {
                 action: "config",
-                route: API.route
+                mobile: mobile
             }
         );
     
