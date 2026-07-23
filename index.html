@@ -2911,45 +2911,47 @@ text||""
 /* =====================================================
 GENERATE UPI QR
 ===================================================== */
-
 function generateUPIQR(){
 
-    if(!App.bill){
-        alert("App.bill is NULL");
+    if(!App.bill || !App.config){
         return;
     }
 
-    if(!App.config){
-        alert("App.config is NULL");
-        return;
+    const amount =
+        Number(App.bill.totalAmount || 0).toFixed(2);
+
+    let upi = "upi://pay?";
+
+    upi += "pa=" +
+        encodeURIComponent(App.config.upiId);
+
+    upi += "&pn=" +
+        encodeURIComponent(App.config.upiName);
+
+    upi += "&tn=" +
+        encodeURIComponent(App.bill.invoiceNumber);
+
+    if(App.config.lockUpiAmount){
+        upi += "&am=" + amount;
     }
 
-    alert(
-        "UPI ID: " + App.config.upiId +
-        "\nUPI Name: " + App.config.upiName
-    );
-
-    let upi =
-        "upi://pay?pa=" + encodeURIComponent(App.config.upiId) +
-        "&pn=" + encodeURIComponent(App.config.upiName) +
-        "&tn=" + encodeURIComponent(App.bill.invoiceNumber) +
-        "&cu=INR";
-
-    alert(upi);
+    upi += "&cu=INR";
 
     QRCode.toDataURL(
         upi,
-        { width:300, margin:1 },
+        {
+            width: 300,
+            margin: 1
+        },
         function(err, url){
 
             if(err){
-                alert("QR Error:\n" + err);
+                console.error("QR Error:", err);
                 return;
             }
 
-            alert("QR Generated");
-
             document.getElementById("upiQr").src = url;
+
         }
     );
 
