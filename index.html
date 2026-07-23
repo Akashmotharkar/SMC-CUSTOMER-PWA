@@ -2562,7 +2562,9 @@ App.history =
 async function loadConfig(){
 
 const response =
-    await API.getConfig();
+    await API.getConfig(
+        App.customer.mobile
+    );
 
 if(!response.success){
 
